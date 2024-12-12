@@ -101,24 +101,26 @@ addButtonElement.addEventListener('click', () => {
 });
 
 counterAutoElement.addEventListener('click', () => {
+     let incrementCounter = () => {
+            game.total += clickImprovement.clickIncrement;
+            refresh();
+            console.log(game.total);
+            updateCounterDisplay();
+            
+        };
     if (game.total < 100 && game.unlockStatus === 0) {
         errorMessageDisplay(); }
     else if(game.total>=100 && game.unlockStatus === 0) {
         game.unlockStatus = 1
         counterAutoElement.textContent =`Current speed : ${game.currentSpeed}/s`
-
-    }
-    if (game.unlockStatus !=0 ) {
-        let incrementCounter = () => {
-            game.total += clickImprovement.clickIncrement;
-            refresh();
-            console.log(game.total);
-            updateCounterDisplay();
-        };
-
         game.autoInterval = setInterval(incrementCounter, 1000);
+
     }
-});
+    
+
+        
+    }
+);
 
 improveClickElement.addEventListener('click', () => {
     clickImprovement.upgradeClick();
