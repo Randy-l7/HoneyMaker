@@ -24,7 +24,7 @@ class Game {
         this.currentSpeed = 1;
         this.milestonesMap = new Map([
             [0, { img: miel, factor: 1, size: 32 }],
-            [2000, { img: boite, factor: 200, size: 128 }]
+            [200, { img: boite, factor: 200, size: 128 }]
         ]);}
 
         updateImage() {
@@ -85,13 +85,13 @@ const refresh = () => {
     const ctx = mielCanvas.getContext("2d");
     ctx.clearRect(0, 0, mielCanvas.width, mielCanvas.height);
     const {img, factor, size} = config;
-    for (let i = 0; i <= (game.total)/factor; i++) {
+    for (let i = 0; i < Math.floor((game.total)/factor); i++) {
             ctx.drawImage(img, (i * size) % mielCanvas.width, Math.floor((i * size) / mielCanvas.width) * size, size, size);
     
     } }
 ;
 
-addButtonElement.addEventListener('click', () => {
+addButtonElement.addEventListener('mousedown', () => {
     game.total += clickImprovement.clickIncrement;
     let audioPlay = new Audio('PLOUF.mp3');
     audioPlay.play();
