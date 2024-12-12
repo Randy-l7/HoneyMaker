@@ -17,7 +17,7 @@ mielCanvas.height = window.innerHeight;
 
 class Game {
     constructor() {
-        this.total = 100;
+        this.total = 0;
         this.autoInterval = null;
         this.Doigby = new Audio('youtube_8P5WCI0iQlo_audio.mp3');
         this.unlockStatus = 0;

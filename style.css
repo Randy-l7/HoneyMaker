@@ -187,16 +187,16 @@ p {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 
 #counterAutoUpgrade {
     background-color: rgb(255, 230, 0);
     height: 6rem;
     border: 1rem;
-    transition: background-color 10s ease, transform 10s ease;
+    /* transition: background-color 10s ease, transform 10s ease; */
 }
 
-#counterAutoUpgrade:hover {
-    background-color: red;
-    transform: scale(5);
-}
+/* #counterAutoUpgrade:hover {
+    /* background-color: red;
+    transform: scale(5); */
