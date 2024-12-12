@@ -1,0 +1,202 @@
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  .roboto-light {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  .roboto-thin-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+  }
+  
+  .roboto-light-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+  
+  .roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+  .roboto-black-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+  }
+  
+
+
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: black;
+    overflow: hidden;
+}
+
+#counter {
+    display:flex;
+    width: 100%;
+    justify-content: center;
+    color: white;
+
+}
+
+#counterDisplay {
+    font-size: 4rem;
+    text-align: center;
+    color: black;
+}
+
+
+#counter button {
+    border: 0;
+    padding: .5rem 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+#counterAdd{
+    background-color: green;
+}
+
+#counterAdd:active {
+    background-color: red; /* Changer la couleur de fond pendant le clic */
+}
+
+#counterSub{
+    background-color: red;
+}
+
+#counterControls{
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    
+}
+
+#counterControls button{
+    color: black }
+
+
+#counterControls > div:first-child button{
+    padding: 1rem 4rem;
+}
+
+#counterAuto{
+    width: 25rem; /* largeur fixe */
+    height: 6rem; /* hauteur fixe si besoin */
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+#counterAuto{
+    background-color: rgb(255, 102, 0);
+}
+
+p {
+    color: black;
+    text-align: center;
+    font-size: 5rem;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+
+#errorMessage {
+    opacity: 0;
+    margin-top: 1rem;
+    text-align: center;
+    background-color: red;
+    padding: .5rem 1rem; /* Ajoute de l'espace autour du texte */
+    width: fit-content; /* L'élément prendra la taille de son contenu */
+    margin-left: auto;
+    margin-right: auto; 
+    border-radius: 1rem;
+    font-size: 1.5rem;
+}
+
+#errorMessage.visible {
+    opacity: 1;
+}
+
+#clickImprove{
+    background-color: rgb(255, 230, 0);
+}
+
+#newElementsContainer {
+    z-index: -2;
+    position: absolute;
+}
+
+
+#counterAutoDisplay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#counterAutoUpgrade {
+    background-color: rgb(255, 230, 0);
+    height: 6rem;
+    border: 1rem;
+    transition: background-color 10s ease, transform 10s ease;
+}
+
+#counterAutoUpgrade:hover {
+    background-color: red;
+    transform: scale(5);
+}
