@@ -62,7 +62,7 @@ class Game {
 
     static incrementCounter() {
         
-        this.total += ClickImprovement.clickIncrement;
+        this.total += 1;
         this.refresh();
         console.log(this.total);
     }
