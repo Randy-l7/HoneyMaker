@@ -5,7 +5,7 @@ const addButtonElement = document.getElementById('counterAdd');
 
 
 class Game {
-    static total = 1000;
+    static total = 0;
     static unlockStatus = 0;
     static currentSpeed = 1;
     static spaceCanvas = document.getElementById('newElementsContainer');
