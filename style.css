@@ -77,6 +77,8 @@ body {
     font-weight: bold;
     background-color: white;
     overflow: hidden;
+    margin: 0 0;
+    user-select: none;
 }
 
 #counter {

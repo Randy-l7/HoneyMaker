@@ -43,41 +43,25 @@ class Game {
         this.saveState();
     }
 
-    static animationFalling() {
-        const ctxFalling = this.spaceCanvas.getContext("2d");
-        for (let i = 0;i<=ClickImprovement.clickIncrement;i++) {
+    static animationFalling() { 
+        for (let i = 0;i<ClickImprovement.clickIncrement;i++) {
         const newPot = {
-            x: Math.random() * this.spaceCanvas.width,
-            y: 0,
+            x:  Math.random() * this.spaceCanvas.width -50,
+            y: -100,
             isFalling: true,
             speed: 2 + 10 * Math.random()
         
         };
         this.fallingPot.push(newPot);
-    }
+    } }
 
         
 
-        const animation = () => {
-            ctxFalling.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
-            this.refresh();
-            this.fallingPot.forEach((pot) => {
-                if (pot.isFalling) {
-                    pot.y += pot.speed;
-                    ctxFalling.drawImage(this.milestonesMap.get(0).img, pot.x, pot.y, 100, 100);
-                }
-            });
-            this.fallingPot = this.fallingPot.filter((pot) => pot.y < this.spaceCanvas.height);
-
-            if (this.fallingPot.length > 0)
-                requestAnimationFrame(animation);
-        };
-        requestAnimationFrame(animation);
-    }
+        
 
     static onResize() {
-        console.log("La fenêtre est redimensionnée !");
-        console.log("Canvas :", this.spaceCanvas.width);
+        
+        
         this.spaceCanvas.width = window.innerWidth;
         this.spaceCanvas.height = window.innerHeight;
         this.refresh();
@@ -100,7 +84,7 @@ class Game {
         }
         this.total += 1;
         this.autoInterval = setInterval(() => Game.incrementCounter(), (1000 / this.currentSpeed));
-        console.log(this.total);
+        
         this.counterAutoElement.textContent = `Current speed : ${this.currentSpeed}/s`;
         this.refresh();
     }
@@ -110,7 +94,7 @@ class Game {
             ErrorManager.errorMessageDisplay();
         } else if (this.total >= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]) {
             this.currentSpeed = Math.pow(2, this.currentUpgradePriceMilestonesIndex + 1);
-            console.log(this.currentSpeed);
+            
             this.currentUpgradePriceMilestonesIndex++;
             this.total -= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex - 1];
             this.refresh();
@@ -119,7 +103,7 @@ class Game {
     }
 
     static actualUpgradeMilestones() {
-        console.log(this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]);
+        
         this.upgradePrice.textContent = `(${this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]} Miel)`;
     }
 
@@ -129,10 +113,32 @@ class Game {
         this.animationFalling();
         audioPlay.play();
         this.Doigby.play();
-        console.log(this.fallingPot.isFalling);
-        console.log('ratio');
+        
+        
         this.refresh();
     }
+    
+    static update() {
+        const ctxFalling = this.spaceCanvas.getContext("2d");
+            if (this.fallingPot.length) {
+                ctxFalling.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
+                this.refresh();
+                this.fallingPot.forEach((pot) => {
+                    if (pot.isFalling) {
+                        pot.y += pot.speed;
+                        ctxFalling.drawImage(this.milestonesMap.get(0).img, pot.x, pot.y, 100, 100);
+                    }
+                });
+                this.fallingPot = this.fallingPot.filter((pot) => pot.y < this.spaceCanvas.height);
+    
+                
+            }; 
+            
+            window.requestAnimationFrame(this.update.bind(this));
+            
+        }
+
+    
 
     static saveState() {
         const state = {
@@ -144,7 +150,7 @@ class Game {
             clickMilestoneIndex: ClickImprovement.currentMilestoneIndex
         };
         localStorage.setItem('gameState', JSON.stringify(state));
-        console.log("saved");
+        
     }
 
     static loadState() {
@@ -167,6 +173,8 @@ class Game {
             this.refresh();
         }
     }
+    
+    
 }
 
 class ClickImprovement {
@@ -189,7 +197,7 @@ class ClickImprovement {
         if (Game.total >= this.milestones[this.currentMilestoneIndex]) {
             this.clickIncrement = Math.pow(2, this.currentMilestoneIndex + 1);
             this.currentMilestoneIndex++;
-            console.log(this.milestones[this.currentMilestoneIndex - 1]);
+            
             Game.total -= this.milestones[this.currentMilestoneIndex - 1];
             this.actualMilestone();
             Game.refresh();
@@ -216,10 +224,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const rect = button.getBoundingClientRect();
     const x = rect.left;
     const y = rect.top;
-    console.log(`x: ${x}, y: ${y}`);
+    
 });
 
+
 Game.loadState();
+Game.update()
 addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
 Game.counterAutoElement.addEventListener('click', () => Game.onClickCounter());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
