@@ -5,7 +5,7 @@ const addButtonElement = document.getElementById('counterAdd');
 
 
 class Game {
-    static total = 0;
+    static total = 1000;
     static unlockStatus = 0;
     static currentSpeed = 1;
     static spaceCanvas = document.getElementById('newElementsContainer');
@@ -13,6 +13,10 @@ class Game {
     static Doigby = new Audio('youtube_8P5WCI0iQlo_audio.mp3');
     static counterAutoElement = document.getElementById('counterAuto');
     static counterDisplayElement = document.getElementById('counterDisplay');
+    static counterAutoUpgrade = document.getElementById("counterAutoUpgrade");
+    static upgradePrice = this.counterAutoUpgrade.querySelector("#upgradePrice");
+    static upgradePriceMilestones = [200,1000,10000,200000]
+    static currentUpgradePriceMilestonesIndex = 0
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "Miel.png" }), factor: 1, size: 32 }],
         [2000, { img: Object.assign(new Image(), { src: "Boite.png" }), factor: 2000, size: 128 }]
@@ -51,21 +55,46 @@ class Game {
             ErrorManager.errorMessageDisplay(); }
         else if(this.total>=100 && this.unlockStatus === 0) {
             this.unlockStatus = 1
-            this.counterAutoElement.textContent =`Current speed : ${this.currentSpeed}/s`
-            // this.autoInterval = setInterval(Game.incrementCounter(), 1000);
-            this.autoInterval = setInterval(() => Game.incrementCounter(), 1000);
             this.total -=100;
             this.refresh();
+            this.incrementCounter();
         }
     
     }
 
     static incrementCounter() {
-        
+        if (this.autoInterval) {
+        clearInterval(this.autoInterval)
+         }
         this.total += 1;
-        this.refresh();
+        this.autoInterval = setInterval(() => Game.incrementCounter(), (1000/this.currentSpeed));
         console.log(this.total);
+        this.counterAutoElement.textContent =`Current speed : ${this.currentSpeed}/s`
+        this.refresh();
     }
+
+    static onClickCounterUpgrade() {
+        if (this.unlockStatus === 0) {
+            ErrorManager.errorMessageDisplay();
+        }
+        else if (this.total >= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]) {
+            this.currentSpeed = Math.pow(2, this.currentUpgradePriceMilestonesIndex + 1);
+            console.log(this.currentSpeed)
+            this.currentUpgradePriceMilestonesIndex++;
+            this.total -= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex - 1];
+            this.refresh();
+            this.actualUpgradeMilestones();
+
+
+        }
+    }
+    static actualUpgradeMilestones() {
+        console.log(this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex])
+        this.upgradePrice.textContent = `(${this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]} Miel)`
+    }    
+    
+
+
 
     static onMouseDown() {
      this.total += ClickImprovement.clickIncrement;
@@ -86,6 +115,8 @@ class ClickImprovement {
     static initialize() {
         this.actualMilestone();
         Game.onResize();
+        
+        Game.actualUpgradeMilestones()
     }
     static actualMilestone() {
         this.improveClickElement.textContent = `Improve Click (${this.milestones[this.currentMilestoneIndex]})`;
@@ -119,8 +150,9 @@ class ErrorManager {
 
 
 
-addButtonElement.addEventListener('mousedown', () => Game.onMouseDown())
-Game.counterAutoElement.addEventListener('click', () => Game.onClickCounter())
+addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
+Game.counterAutoElement.addEventListener('click', () => Game.onClickCounter());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick())
 ClickImprovement.initialize();
 window.addEventListener("resize", () => Game.onResize() );
+Game.counterAutoUpgrade.addEventListener('click', () => Game.onClickCounterUpgrade());
