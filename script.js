@@ -4,8 +4,7 @@ const addButtonElement = document.getElementById('counterAdd');
 
 class Game {
     static total = 0;
-    static unlockStatus = 0;
-    static currentSpeed = 1;
+    static currentSpeed = 0;
     static spaceCanvas = document.getElementById('newElementsContainer');
     static autoInterval = null;
     static Doigby = new Audio('audio/doigby.mp3');
@@ -13,13 +12,20 @@ class Game {
     static counterDisplayElement = document.getElementById('counterDisplay');
     static counterAutoUpgrade = document.getElementById("counterAutoUpgrade");
     static upgradePrice = this.counterAutoUpgrade.querySelector("#upgradePrice");
-    static upgradePriceMilestones = [200, 1000, 10000, 200000];
+    static upgradePriceMilestones = Array.from({ length: 1000 }, (_, i) => Math.round(200 + 100 * i));
     static currentUpgradePriceMilestonesIndex = 0;
     static fallingPot = [];
+    static startTimer = 0.0;
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
         [2000, { img: Object.assign(new Image(), { src: "img/box.png" }), factor: 2000, size: 128 }]
     ]);
+
+    static initialize() {
+        this.autoInterval = setInterval(this.refreshTimer.bind(this), 500);
+        this.onResize();
+        this.actualUpgradeMilestones();
+    }
 
     static updateImage() {
         let currentConfig = null;
@@ -32,79 +38,67 @@ class Game {
     }
 
     static refresh() {
+        if (this.currentSpeed) {
+            this.counterAutoElement.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
+        }
+        const totalString = Math.floor(this.total).toLocaleString("en-us");
+        document.title = `Honey : ${totalString}`;
         let config = this.updateImage();
         const ctx = this.spaceCanvas.getContext("2d");
-        ctx.imageSmoothingQuality = 'high'; // Can also be 'low' or 'medium'
+        ctx.imageSmoothingQuality = 'high';
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
-        this.counterDisplayElement.textContent = this.total.toLocaleString('en-US');;
+        this.counterDisplayElement.textContent = totalString;
         for (let i = 0; i < Math.floor(this.total / factor); i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
         this.saveState();
     }
 
-    static animationFalling() { 
-        for (let i = 0;i<ClickImprovement.clickIncrement;i++) {
-        const newPot = {
-            x:  Math.random() * this.spaceCanvas.width -50,
-            y: -100,
-            isFalling: true,
-            speed: 2 + 10 * Math.random()
-        
-        };
-        this.fallingPot.push(newPot);
-    } }
-
-        
-
-        
+    static animationFalling() {
+        for (let i = 0; i < ClickImprovement.clickIncrement; i++) {
+            const newPot = {
+                x: Math.random() * this.spaceCanvas.width - 50,
+                y: -100,
+                isFalling: true,
+                speed: 2 + 10 * Math.random()
+            };
+            this.fallingPot.push(newPot);
+        }
+    }
 
     static onResize() {
-        
-        
         this.spaceCanvas.width = window.innerWidth;
         this.spaceCanvas.height = window.innerHeight;
         this.refresh();
     }
 
     static onClickCounter() {
-        if (this.total < 100 && this.unlockStatus === 0) {
+        if (this.total < 100 && this.currentSpeed === 0) {
             ErrorManager.errorMessageDisplay();
-        } else if (this.total >= 100 && this.unlockStatus === 0) {
-            this.unlockStatus = 1;
+        } else if (this.total >= 100 && this.currentSpeed === 0) {
+            this.currentSpeed = 1;
             this.total -= 100;
             this.refresh();
-            this.incrementCounter();
+            this.startTimer = Date.now();
         }
-    }
-
-    static incrementCounter() {
-        if (this.autoInterval) {
-            clearInterval(this.autoInterval);
-        }
-        this.total += 1;
-        this.autoInterval = setInterval(() => Game.incrementCounter(), (1000 / this.currentSpeed));
-        
-        this.counterAutoElement.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
-        this.refresh();
     }
 
     static onClickCounterUpgrade() {
-        if (this.unlockStatus === 0) {
+        if (this.currentSpeed === 0) {
             ErrorManager.errorMessageDisplay();
         } else if (this.total >= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]) {
-            this.currentSpeed = Math.pow(2, this.currentUpgradePriceMilestonesIndex + 1);
-            
+            this.currentSpeed += 1;
             this.currentUpgradePriceMilestonesIndex++;
             this.total -= this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex - 1];
             this.refresh();
             this.actualUpgradeMilestones();
+        } else {
+            ErrorManager.errorMessageDisplay();
         }
     }
 
     static actualUpgradeMilestones() {
-        
         this.upgradePrice.textContent = `(${(this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex] || 0).toLocaleString('en-US')} Miel)`;
     }
 
@@ -114,44 +108,52 @@ class Game {
         this.animationFalling();
         audioPlay.play();
         this.Doigby.play();
-        
-        
         this.refresh();
     }
-    
-    static update() {
-        const ctxFalling = this.spaceCanvas.getContext("2d");
-            if (this.fallingPot.length) {
-                ctxFalling.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
-                this.refresh();
-                this.fallingPot.forEach((pot) => {
-                    if (pot.isFalling) {
-                        pot.y += pot.speed;
-                        ctxFalling.drawImage(this.milestonesMap.get(0).img, pot.x, pot.y, 100, 100);
-                    }
-                });
-                this.fallingPot = this.fallingPot.filter((pot) => pot.y < this.spaceCanvas.height);
-    
-                
-            }; 
-            
-            window.requestAnimationFrame(this.update.bind(this));
-            
-        }
 
-    
+    static refreshTimer() {
+        const time = Date.now();
+        const dif = time - this.startTimer;
+        let gain = 0.0;
+        gain += dif / 1000 * this.currentSpeed;
+        if (gain >= 1) {
+            this.total += gain;
+            this.startTimer = time;
+            this.refresh();
+        }
+    }
+
+    static update() {
+        this.refreshTimer();
+        const ctxFalling = this.spaceCanvas.getContext("2d");
+        if (this.fallingPot.length) {
+            ctxFalling.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
+            this.refresh();
+            this.fallingPot.forEach((pot) => {
+                if (pot.isFalling) {
+                    pot.y += pot.speed;
+                    ctxFalling.drawImage(this.milestonesMap.get(0).img, pot.x, pot.y, 100, 100);
+                }
+            });
+            this.fallingPot = this.fallingPot.filter((pot) => pot.y < this.spaceCanvas.height);
+        }
+        window.requestAnimationFrame(this.update.bind(this));
+    }
+
+    static refreshInterval() {
+        this.refreshTimer();
+    }
 
     static saveState() {
         const state = {
             total: this.total,
-            unlockStatus: this.unlockStatus,
             currentSpeed: this.currentSpeed,
             currentUpgradePriceMilestonesIndex: this.currentUpgradePriceMilestonesIndex,
             clickIncrement: ClickImprovement.clickIncrement,
-            clickMilestoneIndex: ClickImprovement.currentMilestoneIndex
+            clickMilestoneIndex: ClickImprovement.currentMilestoneIndex,
+            startTimer: this.startTimer,
         };
         localStorage.setItem('gameState', JSON.stringify(state));
-        
     }
 
     static loadState() {
@@ -159,35 +161,29 @@ class Game {
         if (savedState) {
             const state = JSON.parse(savedState);
             this.total = state.total;
-            this.unlockStatus = state.unlockStatus;
             this.currentSpeed = state.currentSpeed;
             this.currentUpgradePriceMilestonesIndex = state.currentUpgradePriceMilestonesIndex;
             ClickImprovement.clickIncrement = state.clickIncrement;
             ClickImprovement.currentMilestoneIndex = state.clickMilestoneIndex;
-
-            if (this.unlockStatus === 1) {
-                this.incrementCounter();
-            }
+            this.startTimer = state.startTimer;
 
             ClickImprovement.actualMilestone();
             this.actualUpgradeMilestones();
             this.refresh();
         }
     }
-    
-    
 }
 
 class ClickImprovement {
     static clickIncrement = 1;
-    static milestones = [10, 50, 100, 250, 500, 1000, 20000, 50000, 99999999999];
+    static milestones = Array.from({ length: 100 }, (_, i) => Math.round(10 * Math.pow(10 + i, i)));
+    static currentUpgradePriceMilestonesIndex = 0;
     static currentMilestoneIndex = 0;
     static improveClickElement = document.getElementById('clickImprove');
 
     static initialize() {
         this.actualMilestone();
-        Game.onResize();
-        Game.actualUpgradeMilestones();
+
     }
 
     static actualMilestone() {
@@ -198,7 +194,6 @@ class ClickImprovement {
         if (Game.total >= this.milestones[this.currentMilestoneIndex]) {
             this.clickIncrement = Math.pow(2, this.currentMilestoneIndex + 1);
             this.currentMilestoneIndex++;
-            
             Game.total -= this.milestones[this.currentMilestoneIndex - 1];
             this.actualMilestone();
             Game.refresh();
@@ -225,15 +220,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const rect = button.getBoundingClientRect();
     const x = rect.left;
     const y = rect.top;
-    
 });
 
-
 Game.loadState();
-Game.update()
+Game.update();
 addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
 Game.counterAutoElement.addEventListener('click', () => Game.onClickCounter());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
 ClickImprovement.initialize();
+Game.initialize();
 window.addEventListener("resize", () => Game.onResize());
 Game.counterAutoUpgrade.addEventListener('click', () => Game.onClickCounterUpgrade());
