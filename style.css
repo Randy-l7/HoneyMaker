@@ -1,3 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Chango&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 6px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+	background-color: rgb(34, 34, 34); 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: grey;  
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #c3c3c3; 
+}
+
+
 .roboto-thin {
     font-family: "Roboto", sans-serif;
     font-weight: 100;
@@ -69,50 +95,283 @@
     font-weight: 900;
     font-style: italic;
   }
+
+  .chango-regular {
+    font-family: "Chango", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
   
 
+:root {
+  --yellow: rgb(253, 221, 62);
+  --red: rgb(212, 51, 51);
+  --green: rgb(67, 173, 67);
+  --orange: rgb(242, 135, 54);
+}
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Chango", sans-serif;
+    color: white;
+    -webkit-text-stroke: 2px black;
     font-weight: bold;
-    background-color: white;
-    overflow: hidden;
+    background: url(img/background.jpg),
+                linear-gradient(0deg, transparent 60%, rgba(0,0,0,0.8) 100%),
+                linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 30%, transparent 60%, rgba(0,0,0,0.6) 100%);
+    background-size: 50% 100dvh, 100% 100dvh, 100% 100%;
+    background-repeat: repeat, repeat-x, repeat-x;
+    background-blend-mode: overlay;
+    overflow-x: hidden;
     margin: 0 0;
     user-select: none;
 }
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+button {
+  font-family: "Varela Round", sans-serif;
+  transition: 0.2s;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px black;
+  border: none;
+}
+
+button:hover{
+  transform: scale(1.05);
+}
+
+a {
+  color: white;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 4dvh;
+    -webkit-text-stroke: 0px;
+    font-family: "Varela Round", sans-serif;
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+}
+
+@keyframes honey-animation-x {
+  from {
+    left: 0px;
+  }
+  to {
+    left: -500px;
+  }
+}
+
+@keyframes honey-animation-y {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(1.5);
+  }
+}
+
+.honey {
+  position: absolute;
+  top: 0;
+  left: 0;
+  mask: url(img/honey-mask.png); /* Image matricielle utilisée comme masque */
+  mask-mode: alpha;
+  background: url(img/honey-texture-test.png), url(img/honey-mask.png);
+  background-blend-mode: overlay; /* Blend all layers */
+  mask-size: 1000px 35dvh;
+  mask-repeat:repeat-x;
+  background-size: 35dvh 35dvh, 1000px 35dvh;
+  background-repeat: repeat, repeat-x;
+  top: 65dvh;
+  height: 35dvh;
+  width: calc(100dvw + 500px);
+}
+
+.honey-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(img/honey-texture-test.png), #525252;
+  background-blend-mode: overlay; /* Blend all layers */
+  mask-size: 1000px 35dvh;
+  mask-repeat:repeat-x;
+  background-size: 35dvh 35dvh;
+  background-repeat: repeat;
+  top: 100dvh;
+  height: 100%;
+  width: calc(100dvw + 500px);
+}
+
+#front-honey > div {
+  position: relative;
+  height: 100%;
+  transform-origin: 50% 100dvh;
+  animation: honey-animation-x ease-in-out 2s infinite alternate, honey-animation-y ease-in-out 3s infinite alternate;
+}
+
+#back-honey > div {
+  position: relative;
+  height: 100%;
+  transform-origin: 50% 100dvh;
+  animation: honey-animation-x ease-in-out 3s infinite alternate, honey-animation-y ease-in-out 5s infinite alternate;
+}
+
+
+#front-honey {
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  z-index: -1;
+  mix-blend-mode:overlay;
+  max-height: 100%;
+  bottom: 0;
+  width: 100%;
+}
+
+#back-honey {
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  z-index: -2;
+  mix-blend-mode:normal;
+  max-height: 100%;
+  opacity: 0.7;
+  width: 100%;
+  bottom: 0;
+}
+
+#topPannel {
+  position: relative;
+  min-height: 100dvh;
+}
+
 
 #counter {
     display:flex;
     width: 100%;
     justify-content: center;
-    color: white;
 
 }
 
+@keyframes counter-jiggle {
+  from {
+    transform: rotate(-5deg);
+  }
+  to {
+    transform: rotate(5deg);
+  }
+}
+
 #counterDisplay {
+    margin-top: 1dvh;
     font-size: 4rem;
     text-align: center;
-    color: black;
+    animation: counter-jiggle 4s ease-in-out infinite alternate;
 }
 
 
 #counter button {
-    border: 0;
     padding: .5rem 1rem;
     font-size: 2rem;
     cursor: pointer;
 }
 
+
+@keyframes big-honey-jiggle {
+  from {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes big-honey-scale {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
+}
+
+#bigHoney {
+  position: relative;
+  margin: 0 auto;
+  /* left: 50%;
+  transform: translateX(-50%); */
+  width: 10dvw;
+  height: 10dvw;
+}
+
+#bigHoney > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: big-honey-jiggle 2s ease-in-out infinite alternate;
+}
+
+#bigHoney > div > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: big-honey-scale 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes honey-shine-animation {
+  from {
+    transform: scale(2.5)rotate(0deg);
+  }
+  to {
+    transform: scale(2.5)rotate(360deg);
+  }
+}
+
+#honeyShine {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: honey-shine-animation 5s linear infinite;
+}
+
+#bigHoney > div img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
 #counterAdd{
-    background-color: green;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    clip-path: circle(40%);
+    background-color: transparent;
 }
 
-#counterAdd:active {
-    background-color: red;
+#counterAdd~* {
+  transition: 0.2s;
 }
 
-#counterSub{
-    background-color: red;
+#counterAdd:hover~* {
+  transform: scale(1.05);
+}
+
+
+#counterAdd:active~* {
+    transform: scale(1.3);
+    transition: 0s;
 }
 
 #counterControls{
@@ -123,30 +382,23 @@ body {
     
 }
 
-#counterControls button{
-    color: black }
 
-
-#counterControls > div:first-child button{
-    padding: 1rem 4rem;
-}
 
 #counterAuto{
     width: 25rem; /* largeur fixe */
     height: 6rem; /* hauteur fixe si besoin */
-    border: none;
     cursor: pointer;
     text-align: center;
 }
 
 #counterAuto{
-    background-color: rgb(255, 102, 0);
+    background-color: var(--orange);
 }
 
-p {
-    color: black;
+h1 {
     text-align: center;
     font-size: 5rem;
+    margin: 3dvh auto;
 }
 
 @keyframes fadeOut {
@@ -159,15 +411,22 @@ p {
 }
 
 
+#popupContainer {
+  z-index: 1;
+  position: fixed;
+  width: 100dvw;
+}
+
 #errorMessage {
+    position: relative;
     opacity: 0;
-    margin-top: 1rem;
+    margin: 1rem auto;
     text-align: center;
-    background-color: red;
+    -webkit-text-stroke: 0px;
+    font-family: "Varela Round", sans-serif;
+    background-color: var(--red);
     padding: .5rem 1rem; /* Ajoute de l'espace autour du texte */
     width: fit-content; /* L'élément prendra la taille de son contenu */
-    margin-left: auto;
-    margin-right: auto; 
     border-radius: 1rem;
     font-size: 1.5rem;
 }
@@ -177,24 +436,29 @@ p {
 }
 
 #clickImprove{
-    background-color: rgb(255, 230, 0);
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    background-color: var(--yellow);
 }
 
 #newElementsContainer {
+    mask: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 15%);
     z-index: -2;
     position: absolute;
 }
 
 
-#counterAutoDisplay {
+.row-flex {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 15px;
 }
 
 #counterAutoUpgrade {
-    background-color: rgb(255, 230, 0);
+    background-color: var(--yellow);
     height: 6rem;
     border: 1rem;
     /* transition: background-color 10s ease, transform 10s ease; */
@@ -203,3 +467,13 @@ p {
 /* #counterAutoUpgrade:hover {
     /* background-color: red;
     transform: scale(5); */
+
+.left {
+  position: absolute;
+  left: 0;
+}
+
+.right {
+  position: absolute;
+  right: 0;
+}

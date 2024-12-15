@@ -8,7 +8,7 @@ class Game {
     static currentSpeed = 1;
     static spaceCanvas = document.getElementById('newElementsContainer');
     static autoInterval = null;
-    static Doigby = new Audio('youtube_8P5WCI0iQlo_audio.mp3');
+    static Doigby = new Audio('audio/doigby.mp3');
     static counterAutoElement = document.getElementById('counterAuto');
     static counterDisplayElement = document.getElementById('counterDisplay');
     static counterAutoUpgrade = document.getElementById("counterAutoUpgrade");
@@ -17,8 +17,8 @@ class Game {
     static currentUpgradePriceMilestonesIndex = 0;
     static fallingPot = [];
     static milestonesMap = new Map([
-        [0, { img: Object.assign(new Image(), { src: "Miel.png" }), factor: 1, size: 32 }],
-        [2000, { img: Object.assign(new Image(), { src: "Boite.png" }), factor: 2000, size: 128 }]
+        [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
+        [2000, { img: Object.assign(new Image(), { src: "img/box.png" }), factor: 2000, size: 128 }]
     ]);
 
     static updateImage() {
@@ -34,9 +34,10 @@ class Game {
     static refresh() {
         let config = this.updateImage();
         const ctx = this.spaceCanvas.getContext("2d");
+        ctx.imageSmoothingQuality = 'high'; // Can also be 'low' or 'medium'
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
-        this.counterDisplayElement.textContent = this.total;
+        this.counterDisplayElement.textContent = this.total.toLocaleString('en-US');;
         for (let i = 0; i < Math.floor(this.total / factor); i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
@@ -85,7 +86,7 @@ class Game {
         this.total += 1;
         this.autoInterval = setInterval(() => Game.incrementCounter(), (1000 / this.currentSpeed));
         
-        this.counterAutoElement.textContent = `Current speed : ${this.currentSpeed}/s`;
+        this.counterAutoElement.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
         this.refresh();
     }
 
@@ -104,12 +105,12 @@ class Game {
 
     static actualUpgradeMilestones() {
         
-        this.upgradePrice.textContent = `(${this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex]} Miel)`;
+        this.upgradePrice.textContent = `(${(this.upgradePriceMilestones[this.currentUpgradePriceMilestonesIndex] || 0).toLocaleString('en-US')} Miel)`;
     }
 
     static onMouseDown() {
         this.total += ClickImprovement.clickIncrement;
-        let audioPlay = new Audio('PLOUF.mp3');
+        let audioPlay = new Audio('audio/honey-sfx.mp3');
         this.animationFalling();
         audioPlay.play();
         this.Doigby.play();
@@ -190,7 +191,7 @@ class ClickImprovement {
     }
 
     static actualMilestone() {
-        this.improveClickElement.textContent = `Improve Click (${this.milestones[this.currentMilestoneIndex]})`;
+        this.improveClickElement.textContent = `Improve Click (${(this.milestones[this.currentMilestoneIndex] || 0).toLocaleString('en-US')})`;
     }
 
     static upgradeClick() {
