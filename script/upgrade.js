@@ -1,7 +1,7 @@
 "use strict";
 
 import { Game } from './game.js';
-import { ErrorManager } from './errorManager.js';
+import { ErrorManager, notEnoughError } from './errorManager.js';
 
 
 export class Upgrade {
@@ -29,21 +29,23 @@ export class Upgrade {
     refreshSpeed() {
         if (this.currentSpeed) {
             this.buttonUnlock.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
-            this.buttonUpgrade.textContent = `Upgrade \n(${this.baseCost * Math.pow(1.5, this.level+1)})`
+            this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.5, this.level)).toLocaleString("en-us")})`
+            this.buttonUnlock.classList.add('locked');
+            Game.computeTotalSpeed();
         }
     }
 
     onClickCounter() {
-        if (Game.total < 100 && !this.isActive) {
-            ErrorManager.errorMessageDisplay();
-        } else if (Game.total >= 100 && !this.isActive) {
+        if (Game.total < this.baseCost && !this.isActive) {
+            ErrorManager.errorMessageDisplay("Not enough honey!");
+        } else if (Game.total >= this.baseCost && !this.isActive) {
             if (!Game.startTimer) {
                 Game.startTimer = Date.now();
             }
             Game.total -= this.baseCost;
             this.isActive = true;
             this.currentSpeed += this.upgradeFactor;
-            this.buttonUnlock.classList.add('locked');
+            
            
             Game.refresh();
         }
@@ -51,13 +53,13 @@ export class Upgrade {
 
     onClickCounterUpgrade() {
         if (!this.isActive) {
-            console.log(`Upgrade "${this.name}" n'est pas encore débloquée.`);
+            ErrorManager.errorMessageDisplay(`Upgrade "${this.name}" is not yet unlocked!`);
             return;
         }
 
         const cost = this.baseCost * Math.pow(1.5, this.level);
         if (Game.total < cost) {
-            ErrorManager.errorMessageDisplay();
+            ErrorManager.errorMessageDisplay("Not enough honey!");
         } else {
             this.level++;
             this.currentSpeed += this.upgradeFactor;

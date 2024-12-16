@@ -278,10 +278,19 @@ footer {
 }
 
 #counterDisplay {
-    margin-top: 1dvh;
+    margin: 0 auto;
     font-size: 4rem;
     text-align: center;
     animation: counter-jiggle 4s ease-in-out infinite alternate;
+}
+
+#totalSpeed {
+  font-size: 2.5rem;
+  text-align: center;
+  animation: counter-jiggle 4s ease-in-out infinite alternate; 
+  margin-bottom: 2dvh;
+  margin-top: -1dvh;
+
 }
 
 
@@ -312,11 +321,11 @@ footer {
 
 #bigHoney {
   position: relative;
-  margin: 0 auto;
+  margin: 2dvh auto;
   /* left: 50%;
   transform: translateX(-50%); */
-  width: 10dvw;
-  height: 10dvw;
+  width: 18dvh;
+  height: 18dvh;
 }
 
 #bigHoney > div {
@@ -408,7 +417,7 @@ footer {
 h1 {
     text-align: center;
     font-size: 5rem;
-    margin: 3dvh auto;
+    margin: 1.5dvh auto;
 }
 
 @keyframes fadeOut {

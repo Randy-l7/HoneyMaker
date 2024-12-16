@@ -1,7 +1,7 @@
 "use strict";
 
 import { Game } from './game.js';
-import { ErrorManager } from './errorManager.js';
+import { ErrorManager, notEnoughError } from './errorManager.js';
 
 
 export class ClickImprovement {
@@ -27,7 +27,7 @@ export class ClickImprovement {
             this.actualMilestone();
             Game.refresh();
         } else {
-            ErrorManager.errorMessageDisplay();
+            ErrorManager.errorMessageDisplay("Not enough honey!");
         }
     }
 }

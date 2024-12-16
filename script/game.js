@@ -2,7 +2,8 @@
 
 import { Upgrade } from './upgrade.js';
 import { ClickImprovement } from './clickImprovement.js';
-import { ErrorManager } from './errorManager.js';
+import { ErrorManager, notEnoughError } from './errorManager.js';
+
 
 
 const addButtonElement = document.getElementById('counterAdd');
@@ -11,6 +12,7 @@ const addButtonElement = document.getElementById('counterAdd');
 
 export class Game {
     static total = 0;
+    static counterTotalSpeed = document.getElementById('totalSpeed');
     static spaceCanvas = document.getElementById('newElementsContainer');
     static autoInterval = null;
     static Doigby = new Audio('audio/doigby.mp3');
@@ -73,7 +75,7 @@ export class Game {
         ctx.imageSmoothingQuality = 'high';
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
-        this.counterDisplayElement.textContent = totalString;
+        this.counterDisplayElement.textContent = `${totalString} honey`;
         for (let i = 0; i < Math.floor(this.total / factor); i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
@@ -140,6 +142,11 @@ export class Game {
 
     static refreshInterval() {
         this.refreshTimer();
+    }
+
+    static computeTotalSpeed() {
+        const totalspeed = this.upgradeMap.values().reduce((acc, item) => item.currentSpeed + acc, 0);
+        this.counterTotalSpeed.textContent= `${totalspeed} honey/s`
     }
 
     static saveState() {
