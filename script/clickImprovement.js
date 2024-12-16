@@ -1,0 +1,33 @@
+"use strict";
+
+import { Game } from './game.js';
+import { ErrorManager } from './errorManager.js';
+
+
+export class ClickImprovement {
+    static clickIncrement = 1;
+    static milestones = Array.from({ length: 100 }, (_, i) => Math.round(10 * Math.pow(10 + i, i)));
+    static currentUpgradePriceMilestonesIndex = 0;
+    static currentMilestoneIndex = 0;
+    static improveClickElement = document.getElementById('clickImprove');
+
+    static initialize() {
+        this.actualMilestone();
+    }
+
+    static actualMilestone() {
+        this.improveClickElement.textContent = `Improve Click (${(this.milestones[this.currentMilestoneIndex] || 0).toLocaleString('en-US')})`;
+    }
+
+    static upgradeClick() {
+        if (Game.total >= this.milestones[this.currentMilestoneIndex]) {
+            this.clickIncrement = Math.pow(2, this.currentMilestoneIndex + 1);
+            this.currentMilestoneIndex++;
+            Game.total -= this.milestones[this.currentMilestoneIndex - 1];
+            this.actualMilestone();
+            Game.refresh();
+        } else {
+            ErrorManager.errorMessageDisplay();
+        }
+    }
+}
