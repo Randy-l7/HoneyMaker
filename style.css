@@ -143,6 +143,13 @@ button:hover{
   transform: scale(1.05);
 }
 
+
+button:not(.locked):active {
+  transform: scale(0.95);
+  transition: 0s;
+}
+
+
 a {
   color: white;
 }
@@ -157,6 +164,8 @@ footer {
     background: rgb(255,255,255);
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
 }
+
+
 
 @keyframes honey-animation-x {
   from {
@@ -360,6 +369,7 @@ footer {
     background-color: transparent;
 }
 
+
 #counterAdd~* {
   transition: 0.2s;
 }
@@ -378,20 +388,20 @@ footer {
     display:flex;
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
+    gap: .2rem;
     
 }
 
 
 
-#counterAuto{
-    width: 25rem; /* largeur fixe */
-    height: 6rem; /* hauteur fixe si besoin */
+.counterAuto{
+    width: 25rem;
+    height: 6rem; 
     cursor: pointer;
     text-align: center;
 }
 
-#counterAuto{
+.counterAuto{
     background-color: var(--orange);
 }
 
@@ -439,8 +449,11 @@ h1 {
     position: relative;
     width: 50%;
     margin: 0 auto;
+    margin-top: 1.2rem;
     background-color: var(--yellow);
+   
 }
+
 
 #newElementsContainer {
     mask: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 15%);
@@ -457,11 +470,21 @@ h1 {
     gap: 15px;
 }
 
-#counterAutoUpgrade {
+
+#upgradeName p {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: lighter;
+  padding-top: 1rem;
+  padding-bottom: .2rem;
+}
+
+
+.counterAutoUpgrade {
     background-color: var(--yellow);
     height: 6rem;
-    border: 1rem;
-    /* transition: background-color 10s ease, transform 10s ease; */
+    width: 15rem;
+ 
 }
 
 /* #counterAutoUpgrade:hover {

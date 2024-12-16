@@ -44,9 +44,16 @@
                         </div>
                     </div>
                     <button id="clickImprove">Upgrade</button>   
+                    <div id="upgradeName"><p>Honey-Maker :</p></div>
                     <div id="counterAutoDisplay" class="row-flex">
-                        <button id="counterAuto">Unlock Honey-Maker<div>(100 Miel)</div></button>
-                        <button id="counterAutoUpgrade">Upgrade<div id="upgradePrice"></div></button>
+                              
+                        <button class="counterAuto" data-upgrade ="Honey-Maker">Unlock Honey-Maker<br>(100 Miel)</button>
+                        <button class="counterAutoUpgrade" data-upgrade ="Honey-Maker">Upgrade<div class="upgradePrice"></div></button>
+                    </div>
+                    <div id="upgradeName"><p>Honey-Farm :</p></div>
+                    <div id="counterAutoDisplay" class="row-flex">
+                        <button class="counterAuto" data-upgrade="Honey-Farm">Unlock Honey-Farm<br>(500 Miel)</button>
+                        <button class="counterAutoUpgrade" data-upgrade="Honey-Farm">Upgrade<div class="upgradePrice"></div></button>
                     </div>
                 </div>
             </div>
@@ -59,13 +66,14 @@
 
         <!-- <img style="position: relative; width: 50dvw; height: auto;" src="img/nia.png"> -->
 
-        <script src="script.js"></script>
+        
 
     </div>
-
+    
     <footer>
         <span class="left">© Randy 2024</span>
         <span class="right"><a href="https://randy-portfolio.com/">https://randy-portfolio.com</a></span>
     </footer>
+    <script src="script/game.js" type="module"></script>
 </body>
 </html>
