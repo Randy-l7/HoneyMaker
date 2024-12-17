@@ -3,9 +3,8 @@
 import { Game } from './game.js';
 import { ErrorManager, notEnoughError } from './errorManager.js';
 
-
 export class Upgrade {
-    constructor(upgradeFactor = 0, baseCost = 0) {
+    constructor(upgradeFactor = 0, baseCost = 0, milestones = 0) {
         this._currentSpeed = 0;
         this.isActive = false;
         this.upgradeFactor = upgradeFactor;
@@ -14,7 +13,9 @@ export class Upgrade {
         this.buttonUnlock = null;
         this.buttonUpgrade = null;
         this.name = "default upgrade";
-        
+        this.index = 0;
+        this.milestones = milestones;
+        this.element = null;
     }
 
     get currentSpeed() {
@@ -26,27 +27,32 @@ export class Upgrade {
         this.refreshSpeed();
     }
 
+    updateAvailableClass(totalEarned) {
+        if (totalEarned >= this.milestones && this.element && this.element.classList) {
+            this.element.classList.add('available');
+        }
+    }
+
     refreshSpeed() {
         if (this.currentSpeed) {
             this.buttonUnlock.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
-            this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.5, this.level)).toLocaleString("en-us")})`
+            this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.5, this.level)).toLocaleString("en-us")})`;
             this.buttonUnlock.classList.add('locked');
             Game.computeTotalSpeed();
         }
     }
 
     onClickCounter() {
-        if (Game.total < this.baseCost && !this.isActive) {
+        if (Game.currentTotal < this.baseCost && !this.isActive) {
             ErrorManager.errorMessageDisplay("Not enough honey!");
-        } else if (Game.total >= this.baseCost && !this.isActive) {
+        } else if (Game.currentTotal >= this.baseCost && !this.isActive) {
             if (!Game.startTimer) {
                 Game.startTimer = Date.now();
             }
-            Game.total -= this.baseCost;
+            Game.currentTotal -= this.baseCost;
             this.isActive = true;
             this.currentSpeed += this.upgradeFactor;
-            
-           
+            Game.showUpgrade(this.index);
             Game.refresh();
         }
     }
@@ -58,14 +64,13 @@ export class Upgrade {
         }
 
         const cost = this.baseCost * Math.pow(1.5, this.level);
-        if (Game.total < cost) {
+        if (Game.currentTotal < cost) {
             ErrorManager.errorMessageDisplay("Not enough honey!");
         } else {
             this.level++;
             this.currentSpeed += this.upgradeFactor;
-            Game.total -= cost;
+            Game.currentTotal -= cost;
             Game.refresh();
-
         }
     }
 }

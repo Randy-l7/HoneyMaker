@@ -20,10 +20,10 @@ export class ClickImprovement {
     }
 
     static upgradeClick() {
-        if (Game.total >= this.milestones[this.currentMilestoneIndex]) {
+        if (Game.currentTotal >= this.milestones[this.currentMilestoneIndex]) {
             this.clickIncrement = Math.pow(2, this.currentMilestoneIndex + 1);
             this.currentMilestoneIndex++;
-            Game.total -= this.milestones[this.currentMilestoneIndex - 1];
+            Game.currentTotal -= this.milestones[this.currentMilestoneIndex - 1];
             this.actualMilestone();
             Game.refresh();
         } else {

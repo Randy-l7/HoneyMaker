@@ -2,6 +2,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 
+header {
+  position: fixed;
+    top: 0;
+    width: 100%;
+    height: 4dvh;
+    -webkit-text-stroke: 0px;
+    font-family: "Varela Round", sans-serif;
+    z-index: 2; 
+
+    
+
+}
+
+span.material-symbols-outlined {
+  font-size: 24px; /* Taille de l'icône */
+  color: rgb(160, 0, 0);  /* Couleur de l'icône */
+  margin-top: 1dvh;
+  margin-left: 1dvh;
+  padding: 0.5dvh;
+  background: white;
+  border-radius: 50%;
+  transition: background 0.3s ease-in-out;
+}
+
+span.material-symbols-outlined:hover {
+  background: grey;
+  }
+
+
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
 	width: 6px;
@@ -403,16 +433,6 @@ footer {
 
 
 
-.counterAuto{
-    width: 25rem;
-    height: 6rem; 
-    cursor: pointer;
-    text-align: center;
-}
-
-.counterAuto{
-    background-color: var(--orange);
-}
 
 h1 {
     text-align: center;
@@ -434,6 +454,7 @@ h1 {
   z-index: 1;
   position: fixed;
   width: 100dvw;
+  bottom: 1dvh;
 }
 
 #errorMessage {
@@ -480,12 +501,22 @@ h1 {
 }
 
 
-#upgradeName p {
+.upgradeName p {
   margin: 0;
   font-size: 2rem;
   font-weight: lighter;
   padding-top: 1rem;
   padding-bottom: .2rem;
+}
+.counterAuto{
+    width: 25rem;
+    height: 6rem; 
+    cursor: pointer;
+    text-align: center;
+}
+
+.counterAuto{
+    background-color: var(--orange);
 }
 
 
@@ -495,6 +526,21 @@ h1 {
     width: 15rem;
  
 }
+
+.idleFarmer:not(.available) {
+  display: none;
+}
+
+/* .counterAuto:not(.available),.counterAutoUpgrade:not(.available) {
+  opacity: 0.5;
+  pointer-events: none;
+  background-color: grey
+} */
+
+
+
+
+
 
 /* #counterAutoUpgrade:hover {
     /* background-color: red;
