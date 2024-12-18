@@ -27,10 +27,15 @@ export class Upgrade {
         this.refreshSpeed();
     }
 
-    updateAvailableClass(totalEarned) {
-        if (totalEarned >= this.milestones && this.element && this.element.classList) {
-            this.element.classList.add('available');
+    updateAvailableClass(totalEarned, totalCurrent) {
+        if (totalCurrent >= this.baseCost)  {
+            this.element.classList.add('buyable');
+
         }
+        
+        if (totalEarned >= this.milestones) {
+            this.element.classList.add('available');
+        } 
     }
 
     refreshSpeed() {

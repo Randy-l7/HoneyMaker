@@ -2,33 +2,123 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 
-header {
-  position: fixed;
-    top: 0;
-    width: 100%;
-    height: 4dvh;
-    -webkit-text-stroke: 0px;
-    font-family: "Varela Round", sans-serif;
-    z-index: 2; 
 
-    
+
+
+
+#settingsBar {  
+  -webkit-text-stroke: 0px;
+  top: 1dvh;
+  position: fixed;
+  display: flex;
+  height: 0dvh;
+  flex-direction: column;
+  z-index: 1;
+  justify-content: space-between;
+  transition: 1s;
+  opacity: 1;
+  right: 0;
+}
+
+.settingsElement:first-child {
+  display: block;
+  z-index: 1;
+  opacity: 1;
+  pointer-events:auto;
+  
+}
+
+.settingsElement {
+  position: relative;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition-delay: 1s;
 
 }
 
-span.material-symbols-outlined {
-  font-size: 24px; /* Taille de l'icône */
+.settingsElement > * {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#settingsBar.active .settingsElement {
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+#settingsBar.active {
+  height: 10dvh;
+}
+
+
+
+.settingsIcon {
+  margin-right: 1dvh;
+  padding: 0.5dvh;
+  border-radius: 50%;
+  transition: background 0.3s ease-in-out;
+  right: 0;
+  height: fit-content;
+  width: fit-content;
+
+}
+
+
+
+span.material-symbols-outlined.settingsIcon {
+  font-size: 1.5rem; /* Taille de l'icône */
   color: rgb(160, 0, 0);  /* Couleur de l'icône */
-  margin-top: 1dvh;
-  margin-left: 1dvh;
   padding: 0.5dvh;
   background: white;
   border-radius: 50%;
-  transition: background 0.3s ease-in-out;
+  
 }
+
+
 
 span.material-symbols-outlined:hover {
   background: grey;
   }
+
+
+
+#settings.material-symbols-outlined {
+  color: rgb(58, 58, 58);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -513,11 +603,10 @@ h1 {
     height: 6rem; 
     cursor: pointer;
     text-align: center;
+    background-color: var(--orange);
+    opacity: 1;
 }
 
-.counterAuto{
-    background-color: var(--orange);
-}
 
 
 .counterAutoUpgrade {
@@ -527,8 +616,28 @@ h1 {
  
 }
 
+
+.idleFarmer {
+  transition: opacity 0.6s ease;
+}
+
+
+.idleFarmer:not(.buyable) {
+  opacity: 0.5;
+  
+}
+
+.idleFarmer:not(.buyable) button {
+  background-color: grey;
+}
+
+.idleFarmer button {
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+
 .idleFarmer:not(.available) {
-  display: none;
+  opacity: 0;
 }
 
 /* .counterAuto:not(.available),.counterAutoUpgrade:not(.available) {

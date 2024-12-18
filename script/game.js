@@ -5,6 +5,7 @@ import { ClickImprovement } from './clickImprovement.js';
 import { ErrorManager, notEnoughError } from './errorManager.js';
 
 export class Game {
+    static settingsbutton = document.getElementById('settings');
     static deleteStoredDataButton = document.getElementById('deleteButton');
     static addButtonElement = document.getElementById('counterAdd');
     static currentTotal = 0;
@@ -21,7 +22,7 @@ export class Game {
     static startTimer = 0.0;
     static isSavingDisabled = false;
     static upgradeMap = new Map([
-        ["Honey-Maker", new Upgrade(1, 200, 1)],
+        ["Honey-Maker", new Upgrade(1, 200, 10)],
         ["Honey-Farm", new Upgrade(4, 500, 200)],
         ["Honey-Miner", new Upgrade(10, 10000, 2000)]
     ]);
@@ -43,7 +44,7 @@ export class Game {
 
     static initialize() {
         this.autoInterval = setInterval(this.refreshTimer.bind(this), 500);
-        this.onResize();
+
         this.idleFarmerElements.forEach((element) => {
             const name = element.getAttribute('data-upgrade');
             const upgrade = this.upgradeMap.get(name);
@@ -54,8 +55,9 @@ export class Game {
             upgrade.buttonUnlock.addEventListener('click', () => upgrade.onClickCounter());
             upgrade.buttonUpgrade.addEventListener('click', () => upgrade.onClickCounterUpgrade());
             upgrade.refreshSpeed();
+
         }, this);
-        this.refresh();
+        this.onResize();
     }
 
     static updateImage() {
@@ -69,7 +71,7 @@ export class Game {
     }
 
     static refresh() {
-        this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned));
+        this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned,this.currentTotal));
         const totalString = Math.floor(this.currentTotal).toLocaleString("en-us");
         document.title = `Honey : ${totalString}`;
         let config = this.updateImage();
@@ -186,7 +188,6 @@ export class Game {
             this.startTimer = state.startTimer;
 
             ClickImprovement.actualMilestone();
-            this.refresh();
         }
     }
 
@@ -199,11 +200,17 @@ export class Game {
             window.location.reload();
         }
     }
-}
 
+    static onClickSetting() {
+        this.settingsbutton.parentElement.parentElement.classList.toggle('active')
+    }
+}
 Game.loadState();
 Game.initialize();
+
+
 Game.update();
+Game.settingsbutton.addEventListener('click', ()=> Game.onClickSetting())
 Game.addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
 Game.deleteStoredDataButton.addEventListener('click', () => Game.clearState());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
