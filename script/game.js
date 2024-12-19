@@ -160,7 +160,7 @@ export class Game {
 
     static saveState() {
         if (this.isSavingDisabled) return;
-
+        console.log("save")
         const state = {
             totalEarned: this.totalEarned,
             currentTotal: this.currentTotal,
@@ -208,10 +208,11 @@ export class Game {
         this.settingsbutton.parentElement.parentElement.classList.toggle('active')
     }
 }
+
+
+
 Game.loadState();
 Game.initialize();
-
-
 Game.update();
 Game.settingsbutton.addEventListener('click', ()=> Game.onClickSetting())
 Game.addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
