@@ -1,0 +1,4 @@
+Bouton grisé si pas assez de miel FAIT
+Stats Globale avec un onglet fixed
+Shop avec plusieurs items, en bas des boutons d'upgrade
+Faire que les caisses stop de spawn ou remplacer par autre chose
