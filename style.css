@@ -1,12 +1,74 @@
 @import url('https://fonts.googleapis.com/css2?family=Chango&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+}
 
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  color: white;
+  font-size: 1.5rem;
+  font-family: "Varela Round", sans-serif;
+  font-weight: 300;
+  background-color: rgb(53, 53, 53);
+  padding: 2rem;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 35rem;
+  position: relative;
+  -webkit-text-stroke: 0;
+  margin-top: 20dvh;
+}
 
+.modal-content p:first-of-type {
+  margin: 0;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
 
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
+.modal-content li {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1rem;
+}
 
-#settingsBar {  
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: red;
+}
+
+.modal-content div {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+#settingsBar {
   -webkit-text-stroke: 0px;
   top: 1dvh;
   position: fixed;
@@ -24,8 +86,7 @@
   display: block;
   z-index: 1;
   opacity: 1;
-  pointer-events:auto;
-  
+  pointer-events: auto;
 }
 
 .settingsElement {
@@ -34,7 +95,6 @@
   height: 0;
   opacity: 0;
   transition-delay: 1s;
-
 }
 
 .settingsElement > * {
@@ -52,8 +112,6 @@
   height: 10dvh;
 }
 
-
-
 .settingsIcon {
   margin-right: 1dvh;
   padding: 0.5dvh;
@@ -62,166 +120,132 @@
   right: 0;
   height: fit-content;
   width: fit-content;
-
 }
 
-
-
 span.material-symbols-outlined.settingsIcon {
-  font-size: 1.5rem; /* Taille de l'icône */
-  color: rgb(160, 0, 0);  /* Couleur de l'icône */
+  font-size: 1.5rem;
+  color: rgb(160, 0, 0);
   padding: 0.5dvh;
   background: white;
   border-radius: 50%;
-  
 }
-
-
 
 span.material-symbols-outlined:hover {
   background: grey;
-  }
-
-
+}
 
 #settings.material-symbols-outlined {
   color: rgb(58, 58, 58);
 }
 
+#open-modal {
+  color: rgb(255, 230, 0);
+  background-color: rgb(58, 58, 58);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#deleteButton {
+  color: white;
+  background-color: rgb(160, 0, 0);
+}
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-	width: 6px;
+  width: 6px;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track {
-	background-color: rgb(34, 34, 34); 
+  background-color: rgb(34, 34, 34);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: grey;  
-	border-radius: 10px;
+  background: grey;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: #c3c3c3; 
+  background: #c3c3c3;
 }
 
-
 .roboto-thin {
-    font-family: "Roboto", sans-serif;
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  .roboto-light {
-    font-family: "Roboto", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  .roboto-regular {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .roboto-medium {
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  .roboto-bold {
-    font-family: "Roboto", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-  .roboto-black {
-    font-family: "Roboto", sans-serif;
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  .roboto-thin-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 100;
-    font-style: italic;
-  }
-  
-  .roboto-light-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 300;
-    font-style: italic;
-  }
-  
-  .roboto-regular-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: italic;
-  }
-  
-  .roboto-medium-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: italic;
-  }
-  
-  .roboto-bold-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 700;
-    font-style: italic;
-  }
-  
-  .roboto-black-italic {
-    font-family: "Roboto", sans-serif;
-    font-weight: 900;
-    font-style: italic;
-  }
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
 
-  .chango-regular {
-    font-family: "Chango", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.chango-regular {
+  font-family: "Chango", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 :root {
   --yellow: rgb(253, 221, 62);
@@ -231,19 +255,17 @@ span.material-symbols-outlined:hover {
 }
 
 body {
-    font-family: "Chango", sans-serif;
-    color: white;
-    -webkit-text-stroke: 2px black;
-    font-weight: bold;
-    background: url(img/background.jpg),
-                linear-gradient(0deg, transparent 60%, rgba(0,0,0,0.8) 100%),
-                linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 30%, transparent 60%, rgba(0,0,0,0.6) 100%);
-    background-size: 50% 100dvh, 100% 100dvh, 100% 100%;
-    background-repeat: repeat, repeat-x, repeat-x;
-    background-blend-mode: overlay;
-    overflow-x: hidden;
-    margin: 0 0;
-    user-select: none;
+  font-family: "Chango", sans-serif;
+  color: white;
+  -webkit-text-stroke: 2px black;
+  font-weight: bold;
+  background: url(img/background.jpg), linear-gradient(0deg, transparent 60%, rgba(0, 0, 0, 0.8) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, transparent 30%, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+  background-size: 50% 100dvh, 100% 100dvh, 100% 100%;
+  background-repeat: repeat, repeat-x, repeat-x;
+  background-blend-mode: overlay;
+  overflow-x: hidden;
+  margin: 0 0;
+  user-select: none;
 }
 
 img {
@@ -259,33 +281,30 @@ button {
   border: none;
 }
 
-button:hover{
+button:hover {
   transform: scale(1.05);
 }
-
 
 button:not(.locked):active {
   transform: scale(0.95);
   transition: 0s;
 }
 
-
 a {
   color: white;
 }
 
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 4dvh;
-    -webkit-text-stroke: 0px;
-    font-family: "Varela Round", sans-serif;
-    background: rgb(255,255,255);
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 4dvh;
+  -webkit-text-stroke: 0px;
+  font-family: "Varela Round", sans-serif;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%);
+  z-index: 2;
 }
-
-
 
 @keyframes honey-animation-x {
   from {
@@ -309,12 +328,12 @@ footer {
   position: absolute;
   top: 0;
   left: 0;
-  mask: url(img/honey-mask.png); /* Image matricielle utilisée comme masque */
+  mask: url(img/honey-mask.png);
   mask-mode: alpha;
   background: url(img/honey-texture-test.png), url(img/honey-mask.png);
-  background-blend-mode: overlay; /* Blend all layers */
+  background-blend-mode: overlay;
   mask-size: 1000px 35dvh;
-  mask-repeat:repeat-x;
+  mask-repeat: repeat-x;
   background-size: 35dvh 35dvh, 1000px 35dvh;
   background-repeat: repeat, repeat-x;
   top: 65dvh;
@@ -327,9 +346,9 @@ footer {
   top: 0;
   left: 0;
   background: url(img/honey-texture-test.png), #525252;
-  background-blend-mode: overlay; /* Blend all layers */
+  background-blend-mode: overlay;
   mask-size: 1000px 35dvh;
-  mask-repeat:repeat-x;
+  mask-repeat: repeat-x;
   background-size: 35dvh 35dvh;
   background-repeat: repeat;
   top: 100dvh;
@@ -351,13 +370,12 @@ footer {
   animation: honey-animation-x ease-in-out 3s infinite alternate, honey-animation-y ease-in-out 5s infinite alternate;
 }
 
-
 #front-honey {
   position: absolute;
   top: 0;
   overflow: hidden;
   z-index: -1;
-  mix-blend-mode:overlay;
+  mix-blend-mode: overlay;
   max-height: 100%;
   bottom: 0;
   width: 100%;
@@ -368,7 +386,7 @@ footer {
   top: 0;
   overflow: hidden;
   z-index: -2;
-  mix-blend-mode:normal;
+  mix-blend-mode: normal;
   max-height: 100%;
   opacity: 0.7;
   width: 100%;
@@ -380,12 +398,10 @@ footer {
   min-height: 200dvh;
 }
 
-
 #counter {
-    display:flex;
-    width: 100%;
-    justify-content: center;
-
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 @keyframes counter-jiggle {
@@ -398,28 +414,25 @@ footer {
 }
 
 #counterDisplay {
-    margin: 0 auto;
-    font-size: 4rem;
-    text-align: center;
-    animation: counter-jiggle 4s ease-in-out infinite alternate;
+  margin: 0 auto;
+  font-size: 4rem;
+  text-align: center;
+  animation: counter-jiggle 4s ease-in-out infinite alternate;
 }
 
 #totalSpeed {
   font-size: 2.5rem;
   text-align: center;
-  animation: counter-jiggle 4s ease-in-out infinite alternate; 
+  animation: counter-jiggle 4s ease-in-out infinite alternate;
   margin-bottom: 2dvh;
   margin-top: -1dvh;
-
 }
-
 
 #counter button {
-    padding: .5rem 1rem;
-    font-size: 2rem;
-    cursor: pointer;
+  padding: .5rem 1rem;
+  font-size: 2rem;
+  cursor: pointer;
 }
-
 
 @keyframes big-honey-jiggle {
   from {
@@ -442,8 +455,6 @@ footer {
 #bigHoney {
   position: relative;
   margin: 2dvh auto;
-  /* left: 50%;
-  transform: translateX(-50%); */
   width: 18dvh;
   height: 18dvh;
 }
@@ -464,10 +475,10 @@ footer {
 
 @keyframes honey-shine-animation {
   from {
-    transform: scale(2.5)rotate(0deg);
+    transform: scale(2.5) rotate(0deg);
   }
   to {
-    transform: scale(2.5)rotate(360deg);
+    transform: scale(2.5) rotate(360deg);
   }
 }
 
@@ -487,17 +498,16 @@ footer {
   width: 100%;
 }
 
-#counterAdd{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    clip-path: circle(40%);
-    background-color: transparent;
+#counterAdd {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  clip-path: circle(40%);
+  background-color: transparent;
 }
-
 
 #counterAdd~* {
   transition: 0.2s;
@@ -507,38 +517,32 @@ footer {
   transform: scale(1.05);
 }
 
-
 #counterAdd:active~* {
-    transform: scale(1.3);
-    transition: 0s;
+  transform: scale(1.3);
+  transition: 0s;
 }
 
-#counterControls{
-    display:flex;
-    flex-direction: column;
-    text-align: center;
-    gap: .2rem;
-    
+#counterControls {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: .2rem;
 }
-
-
-
 
 h1 {
-    text-align: center;
-    font-size: 5rem;
-    margin: 1.5dvh auto;
+  text-align: center;
+  font-size: 5rem;
+  margin: 1.5dvh auto;
 }
 
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
 
 #popupContainer {
   z-index: 1;
@@ -548,48 +552,44 @@ h1 {
 }
 
 #errorMessage {
-    position: relative;
-    opacity: 0;
-    margin: 1rem auto;
-    text-align: center;
-    -webkit-text-stroke: 0px;
-    font-family: "Varela Round", sans-serif;
-    background-color: var(--red);
-    padding: .5rem 1rem; /* Ajoute de l'espace autour du texte */
-    width: fit-content; /* L'élément prendra la taille de son contenu */
-    border-radius: 1rem;
-    font-size: 1.5rem;
+  position: relative;
+  opacity: 0;
+  margin: 1rem auto;
+  text-align: center;
+  -webkit-text-stroke: 0px;
+  font-family: "Varela Round", sans-serif;
+  background-color: var(--red);
+  padding: .5rem 1rem;
+  width: fit-content;
+  border-radius: 1rem;
+  font-size: 1.5rem;
 }
 
 #errorMessage.visible {
-    opacity: 1;
+  opacity: 1;
 }
 
-#clickImprove{
-    position: relative;
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 1.2rem;
-    background-color: var(--yellow);
-   
+#clickImprove {
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 1.2rem;
+  background-color: var(--yellow);
 }
-
 
 #newElementsContainer {
-    mask: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 15%);
-    z-index: -2;
-    position: absolute;
+  mask: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 15%);
+  z-index: -2;
+  position: absolute;
 }
-
 
 .row-flex {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
-
 
 .upgradeName p {
   margin: 0;
@@ -598,33 +598,28 @@ h1 {
   padding-top: 1rem;
   padding-bottom: .2rem;
 }
-.counterAuto{
-    width: 25rem;
-    height: 6rem; 
-    cursor: pointer;
-    text-align: center;
-    background-color: var(--orange);
-    opacity: 1;
+
+.counterAuto {
+  width: 25rem;
+  height: 6rem;
+  cursor: pointer;
+  text-align: center;
+  background-color: var(--orange);
+  opacity: 1;
 }
-
-
 
 .counterAutoUpgrade {
-    background-color: var(--yellow);
-    height: 6rem;
-    width: 15rem;
- 
+  background-color: var(--yellow);
+  height: 6rem;
+  width: 15rem;
 }
-
 
 .idleFarmer {
   transition: opacity 0.6s ease;
 }
 
-
 .idleFarmer:not(.buyable) {
   opacity: 0.5;
-  
 }
 
 .idleFarmer:not(.buyable) button {
@@ -635,25 +630,9 @@ h1 {
   transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-
 .idleFarmer:not(.available) {
   opacity: 0;
 }
-
-/* .counterAuto:not(.available),.counterAutoUpgrade:not(.available) {
-  opacity: 0.5;
-  pointer-events: none;
-  background-color: grey
-} */
-
-
-
-
-
-
-/* #counterAutoUpgrade:hover {
-    /* background-color: red;
-    transform: scale(5); */
 
 .left {
   position: absolute;

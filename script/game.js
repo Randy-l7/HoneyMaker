@@ -3,6 +3,7 @@
 import { Upgrade } from './upgrade.js';
 import { ClickImprovement } from './clickImprovement.js';
 import { ErrorManager, notEnoughError } from './errorManager.js';
+import { Stats } from './stats.js';
 
 export class Game {
     static settingsbutton = document.getElementById('settings');
@@ -71,6 +72,7 @@ export class Game {
     }
 
     static refresh() {
+        
         this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned,this.currentTotal));
         const totalString = Math.floor(this.currentTotal).toLocaleString("en-us");
         document.title = `Honey : ${totalString}`;
@@ -84,6 +86,7 @@ export class Game {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
         this.saveState();
+        Stats.showTotalEarned();
     }
 
     static animationFalling() {
@@ -217,3 +220,5 @@ ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprov
 ClickImprovement.initialize();
 
 window.addEventListener("resize", () => Game.onResize());
+
+

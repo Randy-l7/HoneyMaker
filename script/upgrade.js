@@ -28,14 +28,16 @@ export class Upgrade {
     }
 
     updateAvailableClass(totalEarned, totalCurrent) {
-        if (totalCurrent >= this.baseCost)  {
+        if (totalCurrent >= this.baseCost || this.isActive === true)  {
             this.element.classList.add('buyable');
-
+        } else {
+            this.element.classList.remove('buyable');
         }
         
         if (totalEarned >= this.milestones) {
             this.element.classList.add('available');
         } 
+
     }
 
     refreshSpeed() {
