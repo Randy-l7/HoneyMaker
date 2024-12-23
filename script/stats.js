@@ -26,6 +26,6 @@ Stats.openModal.addEventListener('click', () => Stats.onClickStatsContainer("ope
 Stats.closeModal.addEventListener('click', () => Stats.onClickStatsContainer("close"));
 Stats.modal.addEventListener('click', (e) => {
     if (e.target === Stats.modal) {
-        Stats.onClickStatsContainer("close"); 
+        Stats.onClickStatsContainer("close");
     }
 });

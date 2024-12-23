@@ -4,6 +4,10 @@ import { Upgrade } from './upgrade.js';
 import { ClickImprovement } from './clickImprovement.js';
 import { ErrorManager, notEnoughError } from './errorManager.js';
 import { Stats } from './stats.js';
+import { Item } from './item.js';
+import { Shop } from './shop.js';
+import { traitEffect, traitTarget, Trait } from "./trait.js";
+
 
 export class Game {
     static settingsbutton = document.getElementById('settings');
@@ -23,9 +27,9 @@ export class Game {
     static startTimer = 0.0;
     static isSavingDisabled = false;
     static upgradeMap = new Map([
-        ["Honey-Maker", new Upgrade(1, 200, 10)],
-        ["Honey-Farm", new Upgrade(4, 500, 200)],
-        ["Honey-Miner", new Upgrade(10, 10000, 2000)]
+        ["Honey-Maker", new Upgrade(1, 200, 10,traitTarget.MAKER)],
+        ["Honey-Farm", new Upgrade(4, 500, 200,traitTarget.FARM)],
+        ["Honey-Miner", new Upgrade(10, 10000, 2000,traitTarget.MINER)]
     ]);
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
@@ -72,7 +76,7 @@ export class Game {
     }
 
     static refresh() {
-        
+        Shop.updateAvailableItem(this.totalEarned);
         this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned,this.currentTotal));
         const totalString = Math.floor(this.currentTotal).toLocaleString("en-us");
         document.title = `Honey : ${totalString}`;
@@ -123,8 +127,13 @@ export class Game {
         const dif = time - this.startTimer;
         let gain = 0.0;
         this.upgradeMap.forEach((upgrade) => {
-            gain += dif / 1000 * upgrade.currentSpeed;
+            upgrade.computeUpgradeItem();
+            gain += (dif /1000.0) * upgrade.computeSpeed
+            
+            // gain += (dif / 1000 * (upgrade.currentSpeed+Shop.computeItem(traitEffect.ADD,upgrade.target))) * Shop.computeItem(traitEffect.MULT, upgrade.target) ;
         });
+        gain += (dif / 1000 * Shop.computeItem(traitEffect.ADD,traitTarget.GLOBAL))
+        gain *= Shop.computeItem(traitEffect.MULT,traitTarget.GLOBAL)
         if (gain >= 1) {
             this.gainHoney(gain);
             this.startTimer = time;
@@ -133,6 +142,7 @@ export class Game {
     }
 
     static update() {
+        
         this.refreshTimer();
         const ctxFalling = this.spaceCanvas.getContext("2d");
         if (this.fallingPot.length) {
@@ -154,20 +164,24 @@ export class Game {
     }
 
     static computeTotalSpeed() {
-        const totalspeed = this.upgradeMap.values().reduce((acc, item) => item.currentSpeed + acc, 0);
-        this.counterTotalSpeed.textContent = `${totalspeed} honey/s`;
+        const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0);
+        this.counterTotalSpeed.textContent = `${totalspeed.toFixed(1)} honey/s`;
     }
 
     static saveState() {
         if (this.isSavingDisabled) return;
-        console.log("save")
         const state = {
+            items: Shop.itemList.map(item => ({
+                name: item.name,
+                isBuyed: item.isBuyed,
+            })),
             totalEarned: this.totalEarned,
             currentTotal: this.currentTotal,
             upgradeMap: JSON.stringify(Object.fromEntries(this.upgradeMap)),
             currentUpgradePriceMilestonesIndex: this.currentUpgradePriceMilestonesIndex,
             clickIncrement: ClickImprovement.clickIncrement,
             clickMilestoneIndex: ClickImprovement.currentMilestoneIndex,
+            
             startTimer: this.startTimer,
         };
 
@@ -178,17 +192,25 @@ export class Game {
         const savedState = localStorage.getItem('gameState');
         if (savedState) {
             const state = JSON.parse(savedState);
+            state.items.forEach(savedItem=> {
+                const item = Shop.itemList.find(i => i.name === savedItem.name);
+                if (item) {
+                    item.isBuyed = savedItem.isBuyed;
+                }
+            })
             this.currentTotal = state.currentTotal;
             this.totalEarned = state.totalEarned;
 
             const parsedUpgradeMap = JSON.parse(state.upgradeMap);
             this.upgradeMap = new Map(Object.entries(parsedUpgradeMap).map(([key, value]) => {
                 return [key, Object.assign(new Upgrade(), value)];
+            
             }));
             this.currentUpgradePriceMilestonesIndex = state.currentUpgradePriceMilestonesIndex;
             ClickImprovement.clickIncrement = state.clickIncrement;
             ClickImprovement.currentMilestoneIndex = state.clickMilestoneIndex;
             this.startTimer = state.startTimer;
+
 
             ClickImprovement.actualMilestone();
         }
@@ -210,7 +232,7 @@ export class Game {
 }
 
 
-
+Shop.initialize();  
 Game.loadState();
 Game.initialize();
 Game.update();
@@ -219,7 +241,4 @@ Game.addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
 Game.deleteStoredDataButton.addEventListener('click', () => Game.clearState());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
 ClickImprovement.initialize();
-
 window.addEventListener("resize", () => Game.onResize());
-
-

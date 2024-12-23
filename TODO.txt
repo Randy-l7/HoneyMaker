@@ -2,3 +2,44 @@ Bouton grisé si pas assez de miel FAIT
 Stats Globale avec un onglet fixed
 Shop avec plusieurs items, en bas des boutons d'upgrade
 Faire que les caisses stop de spawn ou remplacer par autre chose
+
+
+
+
+SHOP :
+
+Item affiché quand milestones atteinte
+Chaque item a un prix et un effet
+
+PREMIERE EFFET 5% GAIN TOTAL
+
+MOINS DE MIEL = + 
+
+
+
+ITEM CALCULE SON GLOBAL POUR 1 PARAMETRE
+
+SHOP LE GLOBALES DE TOUT LES ITEMS
+
+CHANGER CURRENT speed
+CALCULER AVEC LES ITEMS AVANT ET RENVOYER UNE NOUVELLE VALEUR
+
+QUI EST CURRENT SPEED MODIFIER
+t
+ITEM UNLOCK QUAND MILESTONES UPGRADE EX LV 50 ATTEINT
+
+
+UPGRADE REFRESH CURRENT SPEED !
+
+CHANGER CURRENT SPEED
+
+
+
+
+
+
+
+
+
+
+COMPUTESPEED GERE LES EVENTS

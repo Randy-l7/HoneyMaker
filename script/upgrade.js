@@ -2,9 +2,11 @@
 
 import { Game } from './game.js';
 import { ErrorManager, notEnoughError } from './errorManager.js';
+import { traitEffect, traitTarget, Trait } from "./trait.js";
+import { Shop } from './shop.js';
 
 export class Upgrade {
-    constructor(upgradeFactor = 0, baseCost = 0, milestones = 0) {
+    constructor(upgradeFactor = 0, baseCost = 0, milestones = 0, target = traitTarget.NONE) {
         this._currentSpeed = 0;
         this.isActive = false;
         this.upgradeFactor = upgradeFactor;
@@ -13,9 +15,10 @@ export class Upgrade {
         this.buttonUnlock = null;
         this.buttonUpgrade = null;
         this.name = "default upgrade";
-        this.index = 0;
         this.milestones = milestones;
         this.element = null;
+        this.target = target;
+        this.computeSpeed = 0;
     }
 
     get currentSpeed() {
@@ -28,16 +31,15 @@ export class Upgrade {
     }
 
     updateAvailableClass(totalEarned, totalCurrent) {
-        if (totalCurrent >= this.baseCost || this.isActive === true)  {
+        if (totalCurrent >= this.baseCost || this.isActive === true) {
             this.element.classList.add('buyable');
         } else {
             this.element.classList.remove('buyable');
         }
-        
+
         if (totalEarned >= this.milestones) {
             this.element.classList.add('available');
-        } 
-
+        }
     }
 
     refreshSpeed() {
@@ -59,6 +61,7 @@ export class Upgrade {
             Game.currentTotal -= this.baseCost;
             this.isActive = true;
             this.currentSpeed += this.upgradeFactor;
+            this.computeUpgradeItem();
             Game.showUpgrade(this.index);
             Game.refresh();
         }
@@ -76,8 +79,15 @@ export class Upgrade {
         } else {
             this.level++;
             this.currentSpeed += this.upgradeFactor;
+            this.computeUpgradeItem();
             Game.currentTotal -= cost;
             Game.refresh();
         }
+    }
+
+    computeUpgradeItem() {
+        this.computeSpeed =
+            (this.currentSpeed + Shop.computeItem(traitEffect.ADD, this.target)) * Shop.computeItem(traitEffect.MULT, this.target);
+        this.refreshSpeed();
     }
 }
