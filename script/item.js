@@ -29,13 +29,18 @@ export class Item {
 
     onClickItem() {
         const trueNeeded = this.neededUpgrades.map((upgrade) => Game.upgradeMap.get(upgrade));
-        if (!trueNeeded.every((upgrade) => upgrade.isActive)) return;
+        if (!trueNeeded.every((upgrade) => upgrade.isActive)) {
+            ErrorManager.errorMessageDisplay();
+            ErrorManager.errorMessageDisplay(`you have not unlocked the ${this.neededUpgrades}`);
+            return;
+        }
         if (Game.currentTotal >= this.cost) {
             this.isBuyed = true;
+            Game.currentTotal -= this.cost;
             this.itemDiv.remove();
             trueNeeded.forEach((upgrade) => upgrade.computeUpgradeItem());
         } else {
-            ErrorManager.errorMessageDisplay(notEnoughError);
+            ErrorManager.errorMessageDisplay("Not enough honey!");
         }
     }
 

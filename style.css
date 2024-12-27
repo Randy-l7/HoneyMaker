@@ -62,8 +62,9 @@
   transition: 0.3s ease-in-out ;
 }
 
-.item img {
-  max-width: 80%;
+.img-item {
+  height: 100%;
+  max-width: 85%;
   object-fit: contain;
 }
 
@@ -76,6 +77,7 @@
 
 /* Tooltip text */
 .tooltiptext {
+  position:relative;
   visibility: hidden;
   width: 20rem;
   background-color: rgb(11, 29, 41);
@@ -85,17 +87,23 @@
   padding-left: 1rem;
   border-radius: 0.1rem;
 
-  top: 0%; /* Centre la tooltip verticalement */
-  left: 100%; /* Positionne la tooltip à droite de l'item */
+  top: 0%; 
+  left: 100%; 
   pointer-events: none;
   margin-left: 0.35rem;
  
-  /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
+  line-height: 2.2rem;
+  
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
+.tooltiptext::first-line {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+
 .item:hover .tooltiptext {
   visibility: visible;
 }
@@ -103,14 +111,28 @@
 .item .tooltiptext::after {
   content: " ";
   position: absolute;
-  top: 50%; /* At the bottom of the tooltip */
+  top: 50%;
   right: 100%;
   border-width: 0.35rem;
   border-style: solid;
   border-color: transparent black transparent transparent;
 }
 
+.top-right-text {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.5rem;
+  font-size: 1.0rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.2rem;
+  z-index: 1;
+}
 
+
+.honey-icon{
+  height: 0.8rem;
+  margin-left: 0.2rem;
+}
 
 
 
@@ -780,4 +802,9 @@ h1 {
 .right {
   position: absolute;
   right: 0;
+}
+
+
+#idleFarmersContainer {
+  margin-bottom: 2rem;
 }

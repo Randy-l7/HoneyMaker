@@ -10,6 +10,7 @@ import { traitEffect, traitTarget, Trait } from "./trait.js";
 
 
 export class Game {
+    static globalSpeedUpgrade = 1
     static settingsbutton = document.getElementById('settings');
     static deleteStoredDataButton = document.getElementById('deleteButton');
     static addButtonElement = document.getElementById('counterAdd');
@@ -29,7 +30,8 @@ export class Game {
     static upgradeMap = new Map([
         ["Honey-Maker", new Upgrade(1, 200, 10,traitTarget.MAKER)],
         ["Honey-Farm", new Upgrade(4, 500, 200,traitTarget.FARM)],
-        ["Honey-Miner", new Upgrade(10, 10000, 2000,traitTarget.MINER)]
+        ["Honey-Miner", new Upgrade(10, 10000, 2000,traitTarget.MINER)],
+        ["Honey-Bank", new Upgrade(50, 75000, 15000,traitTarget.BANK)]
     ]);
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
@@ -86,7 +88,7 @@ export class Game {
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
         this.counterDisplayElement.textContent = `${totalString} honey`;
-        for (let i = 0; i < Math.floor(this.currentTotal / factor); i++) {
+        for (let i = 0; i < Math.floor(this.currentTotal / factor) && i<2000; i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
         this.saveState();
@@ -132,8 +134,9 @@ export class Game {
             
             // gain += (dif / 1000 * (upgrade.currentSpeed+Shop.computeItem(traitEffect.ADD,upgrade.target))) * Shop.computeItem(traitEffect.MULT, upgrade.target) ;
         });
+        this.globalSpeedUpgrade = Shop.computeItem(traitEffect.MULT,traitTarget.GLOBAL)
         gain += (dif / 1000 * Shop.computeItem(traitEffect.ADD,traitTarget.GLOBAL))
-        gain *= Shop.computeItem(traitEffect.MULT,traitTarget.GLOBAL)
+        gain *= this.globalSpeedUpgrade;
         if (gain >= 1) {
             this.gainHoney(gain);
             this.startTimer = time;
@@ -164,7 +167,7 @@ export class Game {
     }
 
     static computeTotalSpeed() {
-        const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0);
+        const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0) * this.globalSpeedUpgrade; 
         this.counterTotalSpeed.textContent = `${totalspeed.toFixed(1)} honey/s`;
     }
 

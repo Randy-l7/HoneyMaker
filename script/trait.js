@@ -9,7 +9,8 @@ export const traitTarget = {
     GLOBAL: 1,
     MAKER: 2,
     FARM: 3,
-    MINER: 4
+    MINER: 4,
+    BANK: 5
 };
 
 export class Trait {
