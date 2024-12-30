@@ -255,6 +255,3 @@ Game.deleteStoredDataButton.addEventListener('click', () => Game.clearState());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
 ClickImprovement.initialize();
 window.addEventListener("resize", () => Game.onResize());
-
-
-Game.gainHoney(10000000000000000000000000)
