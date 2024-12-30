@@ -19,6 +19,8 @@ export class Upgrade {
         this.element = null;
         this.target = target;
         this.computeSpeed = 0;
+        this.levelColor = null;
+       
     }
 
     get currentSpeed() {
@@ -42,6 +44,15 @@ export class Upgrade {
         }
     }
 
+    updateLevelStyle() {
+        Game.levelMap.forEach((color,key) =>{
+            if (this.level >= key) {
+                this.levelColor.style.background = color
+                this.levelColor.textContent = this.level    
+                return
+            }
+        })}
+
     refreshSpeed() {
         if (this.currentSpeed) {
             this.buttonUnlock.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
@@ -62,6 +73,7 @@ export class Upgrade {
             this.isActive = true;
             this.currentSpeed += this.upgradeFactor;
             this.computeUpgradeItem();
+            
             Game.showUpgrade(this.index);
             Game.refresh();
         }
@@ -78,6 +90,7 @@ export class Upgrade {
             ErrorManager.errorMessageDisplay("Not enough honey!");
         } else {
             this.level++;
+            this.updateLevelStyle();
             this.currentSpeed += this.upgradeFactor;
             this.computeUpgradeItem();
             Game.currentTotal -= cost;

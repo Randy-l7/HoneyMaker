@@ -28,6 +28,30 @@
 }
 
 
+#counter .level-display{
+  position: relative;
+  pointer-events: none;
+  font-size: 2.5rem;
+  width: 7rem;
+  background-color:white;
+  opacity: 1;
+  height: 6rem;
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .shopContainer {
@@ -586,6 +610,7 @@ footer {
 }
 
 #counter button {
+
   padding: .5rem 1rem;
   font-size: 2rem;
   cursor: pointer;
@@ -732,6 +757,8 @@ h1 {
   margin: 0 auto;
   margin-top: 1.2rem;
   background-color: var(--yellow);
+  width: 30rem;
+ 
 }
 
 #newElementsContainer {
@@ -782,7 +809,7 @@ h1 {
 }
 
 .idleFarmer:not(.buyable) button {
-  background-color: grey;
+  background-color: grey !important;
 }
 
 .idleFarmer button {

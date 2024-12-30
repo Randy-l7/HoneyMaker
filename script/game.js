@@ -27,6 +27,14 @@ export class Game {
     static fallingPot = [];
     static startTimer = 0.0;
     static isSavingDisabled = false;
+    static levelMap = new Map([
+        [1, "#4CAF50"], // Vert
+        [5, "#2196F3"], // Bleu
+        [10, "#FF9800"], // Orange
+        [25, "#F44336"], // Rouge
+        [50, "#9C27B0"], // Violet
+        [100, "linear-gradient(to right, red, orange,  violet)"]
+    ])
     static upgradeMap = new Map([
         ["Honey-Maker", new Upgrade(1, 200, 10,traitTarget.MAKER)],
         ["Honey-Farm", new Upgrade(4, 500, 200,traitTarget.FARM)],
@@ -61,6 +69,8 @@ export class Game {
             upgrade.buttonUpgrade = element.querySelector('.counterAutoUpgrade');
             upgrade.buttonUnlock.addEventListener('click', () => upgrade.onClickCounter());
             upgrade.buttonUpgrade.addEventListener('click', () => upgrade.onClickCounterUpgrade());
+            upgrade.levelColor = element.querySelector('.level-display');
+            upgrade.updateLevelStyle();
             upgrade.refreshSpeed();
 
         }, this);
@@ -245,3 +255,6 @@ Game.deleteStoredDataButton.addEventListener('click', () => Game.clearState());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
 ClickImprovement.initialize();
 window.addEventListener("resize", () => Game.onResize());
+
+
+Game.gainHoney(10000000000000000000000000)
