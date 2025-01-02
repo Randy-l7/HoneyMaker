@@ -290,7 +290,7 @@
 }
 
 #settingsBar.active {
-  height: 10dvh;
+  height: 13dvh;
 }
 
 .settingsIcon {
@@ -329,12 +329,21 @@ span.material-symbols-outlined:hover {
   background-color: rgb(160, 0, 0);
 }
 
-/* Custom Scrollbar */
+
+
+
+
+#volume-button {
+  color: black;
+  background-color: white;
+}
+
+
 ::-webkit-scrollbar {
   width: 6px;
 }
 
-/* Track */
+
 ::-webkit-scrollbar-track {
   background-color: rgb(34, 34, 34);
 }

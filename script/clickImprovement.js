@@ -6,7 +6,7 @@ import { ErrorManager, notEnoughError } from './errorManager.js';
 
 export class ClickImprovement {
     static clickIncrement = 1;
-    static milestones = Array.from({ length: 100 }, (_, i) => Math.round(10 * Math.pow(10 + i, i)));
+    static milestones = Array.from({ length: 100 }, (_, i) => Math.round(10 + Math.pow(20 * i, 1.8)));
     static currentUpgradePriceMilestonesIndex = 0;
     static currentMilestoneIndex = 0;
     static improveClickElement = document.getElementById('clickImprove');
@@ -21,7 +21,7 @@ export class ClickImprovement {
 
     static upgradeClick() {
         if (Game.currentTotal >= this.milestones[this.currentMilestoneIndex]) {
-            this.clickIncrement = Math.pow(2, this.currentMilestoneIndex + 1);
+            this.clickIncrement = Math.pow(1.5, this.currentMilestoneIndex + 1);
             this.currentMilestoneIndex++;
             Game.currentTotal -= this.milestones[this.currentMilestoneIndex - 1];
             this.actualMilestone();

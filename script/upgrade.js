@@ -56,7 +56,7 @@ export class Upgrade {
     refreshSpeed() {
         if (this.currentSpeed) {
             this.buttonUnlock.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
-            this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.5, this.level)).toLocaleString("en-us")})`;
+            this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.1, this.level)).toLocaleString("en-us")})`;
             this.buttonUnlock.classList.add('locked');
             Game.computeTotalSpeed();
         }
@@ -85,7 +85,7 @@ export class Upgrade {
             return;
         }
 
-        const cost = this.baseCost * Math.pow(1.5, this.level);
+        const cost = this.baseCost * Math.pow(1.1, this.level);
         if (Game.currentTotal < cost) {
             ErrorManager.errorMessageDisplay("Not enough honey!");
         } else {

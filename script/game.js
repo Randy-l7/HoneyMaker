@@ -8,11 +8,11 @@ import { Item } from './item.js';
 import { Shop } from './shop.js';
 import { traitEffect, traitTarget, Trait } from "./trait.js";
 
-
 export class Game {
-    static globalSpeedUpgrade = 1
+    static globalSpeedUpgrade = 1;
     static settingsbutton = document.getElementById('settings');
     static deleteStoredDataButton = document.getElementById('deleteButton');
+    static volumeButton = document.getElementById('volume-button');
     static addButtonElement = document.getElementById('counterAdd');
     static currentTotal = 0;
     static totalEarned = 0;
@@ -24,6 +24,7 @@ export class Game {
     static idleFarmerElements = document.querySelectorAll(".idleFarmer");
     static upgradePriceMilestones = Array.from({ length: 1000 }, (_, i) => Math.round(200 + 100 * i));
     static currentMapUpgradePriceIndex = 0;
+    static isMuted = false;
     static fallingPot = [];
     static startTimer = 0.0;
     static isSavingDisabled = false;
@@ -33,13 +34,13 @@ export class Game {
         [10, "#FF9800"], // Orange
         [25, "#F44336"], // Rouge
         [50, "#9C27B0"], // Violet
-        [100, "linear-gradient(to right, red, orange,  violet)"]
-    ])
+        [100, "linear-gradient(to right, red, orange, violet)"]
+    ]);
     static upgradeMap = new Map([
-        ["Honey-Maker", new Upgrade(1, 200, 10,traitTarget.MAKER)],
-        ["Honey-Farm", new Upgrade(4, 500, 200,traitTarget.FARM)],
-        ["Honey-Miner", new Upgrade(10, 10000, 2000,traitTarget.MINER)],
-        ["Honey-Bank", new Upgrade(50, 75000, 15000,traitTarget.BANK)]
+        ["Honey-Maker", new Upgrade(1, 200, 10, traitTarget.MAKER)],
+        ["Honey-Farm", new Upgrade(4, 500, 200, traitTarget.FARM)],
+        ["Honey-Miner", new Upgrade(10, 10000, 2000, traitTarget.MINER)],
+        ["Honey-Bank", new Upgrade(50, 75000, 15000, traitTarget.BANK)]
     ]);
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
@@ -72,7 +73,6 @@ export class Game {
             upgrade.levelColor = element.querySelector('.level-display');
             upgrade.updateLevelStyle();
             upgrade.refreshSpeed();
-
         }, this);
         this.onResize();
     }
@@ -89,7 +89,7 @@ export class Game {
 
     static refresh() {
         Shop.updateAvailableItem(this.totalEarned);
-        this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned,this.currentTotal));
+        this.upgradeMap.forEach((upgrade) => upgrade.updateAvailableClass(this.totalEarned, this.currentTotal));
         const totalString = Math.floor(this.currentTotal).toLocaleString("en-us");
         document.title = `Honey : ${totalString}`;
         let config = this.updateImage();
@@ -98,7 +98,7 @@ export class Game {
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
         this.counterDisplayElement.textContent = `${totalString} honey`;
-        for (let i = 0; i < Math.floor(this.currentTotal / factor) && i<2000; i++) {
+        for (let i = 0; i < Math.floor(this.currentTotal / factor) && i < 2000; i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
         }
         this.saveState();
@@ -127,8 +127,10 @@ export class Game {
         this.gainHoney(ClickImprovement.clickIncrement);
         let audioPlay = new Audio('audio/honey-sfx.mp3');
         audioPlay.volume = 0.2;
-        this.Doigby.play();
-        this.Doigby.volume = 0.1;
+        if (!this.isMuted) {
+            this.Doigby.play();
+            this.Doigby.volume = 0.1;
+        }
         this.animationFalling();
         audioPlay.play();
         this.refresh();
@@ -140,12 +142,11 @@ export class Game {
         let gain = 0.0;
         this.upgradeMap.forEach((upgrade) => {
             upgrade.computeUpgradeItem();
-            gain += (dif /1000.0) * upgrade.computeSpeed
-            
+            gain += (dif / 1000.0) * upgrade.computeSpeed;
             // gain += (dif / 1000 * (upgrade.currentSpeed+Shop.computeItem(traitEffect.ADD,upgrade.target))) * Shop.computeItem(traitEffect.MULT, upgrade.target) ;
         });
-        this.globalSpeedUpgrade = Shop.computeItem(traitEffect.MULT,traitTarget.GLOBAL)
-        gain += (dif / 1000 * Shop.computeItem(traitEffect.ADD,traitTarget.GLOBAL))
+        this.globalSpeedUpgrade = Shop.computeItem(traitEffect.MULT, traitTarget.GLOBAL);
+        gain += (dif / 1000 * Shop.computeItem(traitEffect.ADD, traitTarget.GLOBAL));
         gain *= this.globalSpeedUpgrade;
         if (gain >= 1) {
             this.gainHoney(gain);
@@ -155,7 +156,6 @@ export class Game {
     }
 
     static update() {
-        
         this.refreshTimer();
         const ctxFalling = this.spaceCanvas.getContext("2d");
         if (this.fallingPot.length) {
@@ -172,12 +172,24 @@ export class Game {
         window.requestAnimationFrame(this.update.bind(this));
     }
 
+    static volumeControl() {
+        if (!this.isMuted) {
+            this.isMuted = true;
+            this.volumeButton.textContent = "music_off";
+            this.Doigby.volume = 0;
+            return;
+        }
+        this.isMuted = false;
+        this.volumeButton.textContent = "music_note";
+        this.Doigby.volume = 0.1;
+    }
+
     static refreshInterval() {
         this.refreshTimer();
     }
 
     static computeTotalSpeed() {
-        const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0) * this.globalSpeedUpgrade; 
+        const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0) * this.globalSpeedUpgrade;
         this.counterTotalSpeed.textContent = `${totalspeed.toFixed(1)} honey/s`;
     }
 
@@ -194,7 +206,6 @@ export class Game {
             currentUpgradePriceMilestonesIndex: this.currentUpgradePriceMilestonesIndex,
             clickIncrement: ClickImprovement.clickIncrement,
             clickMilestoneIndex: ClickImprovement.currentMilestoneIndex,
-            
             startTimer: this.startTimer,
         };
 
@@ -205,25 +216,23 @@ export class Game {
         const savedState = localStorage.getItem('gameState');
         if (savedState) {
             const state = JSON.parse(savedState);
-            state.items.forEach(savedItem=> {
+            state.items.forEach(savedItem => {
                 const item = Shop.itemList.find(i => i.name === savedItem.name);
                 if (item) {
                     item.isBuyed = savedItem.isBuyed;
                 }
-            })
+            });
             this.currentTotal = state.currentTotal;
             this.totalEarned = state.totalEarned;
 
             const parsedUpgradeMap = JSON.parse(state.upgradeMap);
             this.upgradeMap = new Map(Object.entries(parsedUpgradeMap).map(([key, value]) => {
                 return [key, Object.assign(new Upgrade(), value)];
-            
             }));
             this.currentUpgradePriceMilestonesIndex = state.currentUpgradePriceMilestonesIndex;
             ClickImprovement.clickIncrement = state.clickIncrement;
             ClickImprovement.currentMilestoneIndex = state.clickMilestoneIndex;
             this.startTimer = state.startTimer;
-
 
             ClickImprovement.actualMilestone();
         }
@@ -240,18 +249,18 @@ export class Game {
     }
 
     static onClickSetting() {
-        this.settingsbutton.parentElement.parentElement.classList.toggle('active')
+        this.settingsbutton.parentElement.parentElement.classList.toggle('active');
     }
 }
 
-
-Shop.initialize();  
+Shop.initialize();
 Game.loadState();
 Game.initialize();
 Game.update();
-Game.settingsbutton.addEventListener('click', ()=> Game.onClickSetting())
+Game.settingsbutton.addEventListener('click', () => Game.onClickSetting());
 Game.addButtonElement.addEventListener('mousedown', () => Game.onMouseDown());
 Game.deleteStoredDataButton.addEventListener('click', () => Game.clearState());
+Game.volumeButton.addEventListener('click', () => Game.volumeControl());
 ClickImprovement.improveClickElement.addEventListener('click', () => ClickImprovement.upgradeClick());
 ClickImprovement.initialize();
 window.addEventListener("resize", () => Game.onResize());
