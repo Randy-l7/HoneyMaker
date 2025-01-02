@@ -207,6 +207,7 @@ export class Game {
             clickIncrement: ClickImprovement.clickIncrement,
             clickMilestoneIndex: ClickImprovement.currentMilestoneIndex,
             startTimer: this.startTimer,
+            isMuted: this.isMuted
         };
 
         localStorage.setItem('gameState', JSON.stringify(state));
@@ -224,6 +225,7 @@ export class Game {
             });
             this.currentTotal = state.currentTotal;
             this.totalEarned = state.totalEarned;
+            this.isMuted = state.isMuted
 
             const parsedUpgradeMap = JSON.parse(state.upgradeMap);
             this.upgradeMap = new Map(Object.entries(parsedUpgradeMap).map(([key, value]) => {
