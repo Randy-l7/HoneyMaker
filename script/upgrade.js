@@ -58,7 +58,7 @@ export class Upgrade {
             this.buttonUnlock.textContent = `Current speed : ${this.currentSpeed.toLocaleString('en-US')}/s`;
             this.buttonUpgrade.textContent = `Upgrade \n(${Math.floor(this.baseCost * Math.pow(1.1, this.level)).toLocaleString("en-us")})`;
             this.buttonUnlock.classList.add('locked');
-            Game.computeTotalSpeed();
+            
         }
     }
 
@@ -94,6 +94,7 @@ export class Upgrade {
             this.currentSpeed += this.upgradeFactor;
             this.computeUpgradeItem();
             Game.currentTotal -= cost;
+            Game.computeTotalSpeed();
             Game.refresh();
         }
     }
@@ -102,5 +103,6 @@ export class Upgrade {
         this.computeSpeed =
             (this.currentSpeed + Shop.computeItem(traitEffect.ADD, this.target)) * Shop.computeItem(traitEffect.MULT, this.target);
         this.refreshSpeed();
+        Game.computeTotalSpeed();
     }
 }

@@ -673,12 +673,12 @@ footer {
   }
 }
 
-#honeyShine {
+#honey-shine {
   z-index: -1;
   position: absolute;
   left: 0;
-  width: 100%;
   height: 100%;
+  width: 100%;
   animation: honey-shine-animation 5s linear infinite;
 }
 

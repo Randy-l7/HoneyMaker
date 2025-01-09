@@ -28,6 +28,8 @@ export class Game {
     static fallingPot = [];
     static startTimer = 0.0;
     static isSavingDisabled = false;
+    static honeyShine = document.getElementById('honey-shine');
+    static styleSheet = document.styleSheets[0];
     static levelMap = new Map([
         [1, "#4CAF50"], // Vert
         [5, "#2196F3"], // Bleu
@@ -44,7 +46,7 @@ export class Game {
     ]);
     static milestonesMap = new Map([
         [0, { img: Object.assign(new Image(), { src: "img/honey.png" }), factor: 1, size: 32 }],
-        [2000, { img: Object.assign(new Image(), { src: "img/box.png" }), factor: 2000, size: 128 }]
+        [2000, { img: Object.assign(new Image(), { src: "img/box.png" }), factor: 2000, size: 96 }]
     ]);
 
     static gainHoney(value) {
@@ -75,7 +77,10 @@ export class Game {
             upgrade.refreshSpeed();
         }, this);
         this.onResize();
+        this.computeTotalSpeed();
     }
+
+    static updateKeyFrames
 
     static updateImage() {
         let currentConfig = null;
@@ -94,13 +99,15 @@ export class Game {
         document.title = `Honey : ${totalString}`;
         let config = this.updateImage();
         const ctx = this.spaceCanvas.getContext("2d");
+      
         ctx.imageSmoothingQuality = 'high';
         ctx.clearRect(0, 0, this.spaceCanvas.width, this.spaceCanvas.height);
         const { img, factor, size } = config;
+        const maxItems = Math.floor(this.spaceCanvas.width / size) * Math.floor(this.spaceCanvas.height / size);
         this.counterDisplayElement.textContent = `${totalString} honey`;
-        for (let i = 0; i < Math.floor(this.currentTotal / factor) && i < 2000; i++) {
+        for (let i = 0; i < Math.floor(this.currentTotal / factor) && i < maxItems; i++) {
             ctx.drawImage(img, (i * size) % this.spaceCanvas.width, Math.floor((i * size) / this.spaceCanvas.width) * size, size, size);
-        }
+        }   
         this.saveState();
         Stats.showTotalEarned();
     }
@@ -189,9 +196,27 @@ export class Game {
     }
 
     static computeTotalSpeed() {
+    
         const totalspeed = this.upgradeMap.values().reduce((acc, upgrade) => upgrade.computeSpeed + acc, 0) * this.globalSpeedUpgrade;
+        this.honeyShine.style.animation = `honey-shine-animation ${5-(totalspeed/5000)}s linear infinite`;
+        // this.honeyShine.style.width = `${14+(totalspeed/1000)}rem`;
+        // this.honeyShine.style.height = `${14+(totalspeed/1000)}rem`;
+        // this.updatePosition();
         this.counterTotalSpeed.textContent = `${totalspeed.toFixed(1)} honey/s`;
     }
+    // static updatePosition() {
+    //     const honeyShine = this.honeyShine;
+    //     const parent = honeyShine.parentElement;
+    
+    //     const honeyShineWidth = honeyShine.offsetWidth;
+    //     const honeyShineHeight = honeyShine.offsetHeight;
+    
+    //     const parentWidth = parent.offsetWidth;
+    //     const parentHeight = parent.offsetHeight;
+    
+    //     honeyShine.style.left = `${(parentWidth - honeyShineWidth) / 2}px`;
+    //     honeyShine.style.top = `${(parentHeight - honeyShineHeight) / 2}px`;
+    // }
 
     static saveState() {
         if (this.isSavingDisabled) return;
@@ -200,6 +225,7 @@ export class Game {
                 name: item.name,
                 isBuyed: item.isBuyed,
             })),
+            volumeButton: this.volumeButton.textContent,
             totalEarned: this.totalEarned,
             currentTotal: this.currentTotal,
             upgradeMap: JSON.stringify(Object.fromEntries(this.upgradeMap)),
@@ -223,6 +249,7 @@ export class Game {
                     item.isBuyed = savedItem.isBuyed;
                 }
             });
+            this.volumeButton.textContent = state.volumeButton;
             this.currentTotal = state.currentTotal;
             this.totalEarned = state.totalEarned;
             this.isMuted = state.isMuted
