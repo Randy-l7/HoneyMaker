@@ -106,7 +106,7 @@ export class Game {
     }
 
     static animationFalling() {
-        for (let i = 0; i < ClickImprovement.clickIncrement; i++) {
+        for (let i = 0; i < ClickImprovement.clickIncrement && i < 100; i++) {
             const newPot = {
                 x: Math.random() * this.spaceCanvas.width - 50,
                 y: -100,
